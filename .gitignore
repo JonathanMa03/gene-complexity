@@ -288,3 +288,7 @@ __pycache__/
 !*.jpg
 !*.jpeg
 !*.svg
+
+# Downloaded datasets and local AnnData files
+/data/raw/
+*.h5ad
