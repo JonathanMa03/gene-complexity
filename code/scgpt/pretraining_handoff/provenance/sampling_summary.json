@@ -1,0 +1,49 @@
+{
+  "cellxgene_census": "1.17.0",
+  "census_version": "2023-05-15",
+  "duplicate_erratum_correction_applied": false,
+  "eligible_cell_types": 164,
+  "eligible_cells": 22190622,
+  "eligible_donors": 4314,
+  "eligible_tissues_general": 56,
+  "expected_eligible_cells": 22190622,
+  "nested_sizes": [
+    2220,
+    4440,
+    8880,
+    17760,
+    35520,
+    71040,
+    142080,
+    222000
+  ],
+  "ontology_url": "https://github.com/obophenotype/cell-ontology/releases/download/v2023-05-22/cl-simple.obo",
+  "paper_reported_cells": 22189056,
+  "platform": "Linux-4.18.0-553.44.1.el8_10.x86_64-x86_64-with-glibc2.28",
+  "protocols": [
+    "10x 5' v2",
+    "10x 3' v3",
+    "10x 3' v2",
+    "10x 5' v1",
+    "10x 3' v1",
+    "10x 3' transcription profiling",
+    "10x 5' transcription profiling"
+  ],
+  "python": "3.10.13 | packaged by conda-forge | (main, Oct 26 2023, 18:07:37) [GCC 12.3.0]",
+  "seed_0_manifest": {
+    "n_cells": 222000,
+    "path": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/sctab_seed0_n222000_cells.parquet",
+    "sha256": "206cb138eb3b90000f85807f7286e44b03acaab92d25fa9c1b2e1862accb2245"
+  },
+  "seed_1_manifest": {
+    "n_cells": 222000,
+    "path": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/sctab_seed1_n222000_cells.parquet",
+    "sha256": "6ef838af5fb6837e4340ad704dfd8854d83ba7522b87f066588abf96584b76bb"
+  },
+  "seed_2_manifest": {
+    "n_cells": 222000,
+    "path": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/sctab_seed2_n222000_cells.parquet",
+    "sha256": "8b03b64e2affff0f2b9b24365d98b665cf4ef1b6512710be67be373211b0e3cb"
+  },
+  "upstream_notebook_minus_paper_cells": 1566
+}

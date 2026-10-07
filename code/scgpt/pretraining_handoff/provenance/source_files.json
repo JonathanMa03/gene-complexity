@@ -1,0 +1,720 @@
+{
+  "files": [
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/model/model.py",
+      "destination": "vendor/scgpt/model/model.py",
+      "sha256": "4ae77618cc6f12a7d1f6d946fee3f7bd5c56f3e9e103073394a590ceba5a35ed"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/model/flash_attn_compat.py",
+      "destination": "vendor/scgpt/model/flash_attn_compat.py",
+      "sha256": "5a37a9a172c83c286cd45d9387051d7cc09634bc7f635e11e7615da636860251"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/model/dsbn.py",
+      "destination": "vendor/scgpt/model/dsbn.py",
+      "sha256": "666e443b530b8f4c7a26759c18b2c3125d96bb8ae55b7d91f26599ae7f84fb9b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/model/grad_reverse.py",
+      "destination": "vendor/scgpt/model/grad_reverse.py",
+      "sha256": "506b0adb351b1dc50f5778434b6c4a553cd18d23a6100add62fdbf2791764ad6"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/tokenizer/gene_tokenizer.py",
+      "destination": "vendor/scgpt/tokenizer/gene_tokenizer.py",
+      "sha256": "5044666baf469c46b77a124ae01c2ccbea02c185c6a93333d09b9571c088b8b5"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/tokenizer/vocab_compat.py",
+      "destination": "vendor/scgpt/tokenizer/vocab_compat.py",
+      "sha256": "8c0b24277a4d9eaef2176be038af5b082acd071f331922eb075a38fdb3f9c59c"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/tokenizer/__init__.py",
+      "destination": "vendor/scgpt/tokenizer/__init__.py",
+      "sha256": "dff8c48c65b5a2574af040b4ca5b8d11f0ae3a003a27bc04b856d20609d6f1ca"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/preprocess.py",
+      "destination": "vendor/scgpt/preprocess.py",
+      "sha256": "e0928ef5cbbdbe5012869cf890740d972c4faa6852e22006ac8dc52846fd5c84"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/data_collator.py",
+      "destination": "vendor/scgpt/data_collator.py",
+      "sha256": "4543e16e5fd162ba935c8e7687059953503db1878189dfd33c0ecda3375428e9"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/scgpt/loss.py",
+      "destination": "vendor/scgpt/loss.py",
+      "sha256": "b830b16b8bb83e60aa052efd766f4ef2b4e46970a38c4c4ec6ec2734aac2d89c"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/foundation_panelB_gpu_transfer_bundle/Application/Layer 1A/models/scGPT_repo/LICENSE",
+      "destination": "vendor/LICENSE.scGPT",
+      "sha256": "1ceeacbed51e2890187425547bc2efd16c1b7ad45189b7dfb21e83a45a2e9d9e"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/pca/sctab_hvg_2000.tsv",
+      "destination": "assets/sctab_hvg_2000.tsv",
+      "sha256": "e7ea89b851d7d0c8c2c370801d2c89dd031468942cdff9523bba356c42b0591e"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/pca/gene_panel_summary.json",
+      "destination": "provenance/gene_panel_summary.json",
+      "sha256": "33f809828d42096ebff91ed52c1dcd184246767c8c15dbab7facfc8544f6120a"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/sampling_summary.json",
+      "destination": "provenance/sampling_summary.json",
+      "sha256": "7006ab9e85da92142a37f495c5cd705f0d8e6c08026ae3b887676072cd2c0932"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/01_build_sampling_manifests.py",
+      "destination": "original_scripts/01_build_sampling_manifests.py",
+      "sha256": "dd1bf790eccb5800a09ed9e0e0ca71fd143c71e19bc237a808a267390778f745"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/02_download_nested_matrices.py",
+      "destination": "original_scripts/02_download_nested_matrices.py",
+      "sha256": "05764a5ca9015cd9be26b8379cbd5384ba363344b118fc382026efbc4fd45a11"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/04_select_sctab_gene_panel.py",
+      "destination": "original_scripts/04_select_sctab_gene_panel.py",
+      "sha256": "819f61ee79dac727822e18a79e29ce0386a9e6cc435af6ccb50d37a745f57317"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/08_train_scgpt.py",
+      "destination": "original_scripts/08_train_scgpt.py",
+      "sha256": "224dc58897afb6cd6b59211e533c1a05a6d69e1ba3970b4cb7c62555a46557b8"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/09_embed_dogma_scgpt.py",
+      "destination": "original_scripts/09_embed_dogma_scgpt.py",
+      "sha256": "0e37ef86e627b807bf7869685df2364692daef05f90302bed4784c5cf82dd911"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/17_build_pretraining_umi_matrices.py",
+      "destination": "original_scripts/17_build_pretraining_umi_matrices.py",
+      "sha256": "4ad864a1af5b513569d0e6f30b6157e3d7f3fd9f33c13c44c46546a02eaeb178"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/18_pretraining_umi_scgpt.sbatch",
+      "destination": "original_scripts/18_pretraining_umi_scgpt.sbatch",
+      "sha256": "97bece5c24e403736e3c4b52fbaaad09b362b7d1be2c0f9d98dd95f622758dd0"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_888k/prepare_extension.py",
+      "destination": "original_scripts/cell_extension_888k/prepare_extension.py",
+      "sha256": "36e05369bed814531564e3b9c4197e4ef8589d4202b8c917ba61ae455da46582"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_888k/08_train_scgpt.py",
+      "destination": "original_scripts/cell_extension_888k/08_train_scgpt.py",
+      "sha256": "75370292cbead5bb12e18b765fda1f90f1f13df1ba621fb1a377933175a21cf1"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_888k/09_embed_dogma_scgpt.py",
+      "destination": "original_scripts/cell_extension_888k/09_embed_dogma_scgpt.py",
+      "sha256": "22448537d56b81d3a3192245b5b4bf663cab327b63a697ce11bb2b640200bbb4"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_888k/README.md",
+      "destination": "original_scripts/cell_extension_888k/README.md",
+      "sha256": "43f19d8bcb95a3fe6c283afe6e3f79abb1259dd639f7b9b6ff30639156795856"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_888k/sampling_seed0.json",
+      "destination": "provenance/cell_extension_888k/sampling_seed0.json",
+      "sha256": "cf8a7240df701c676fb80c85422dcc189a6de1edcb7d680888ce3f37f567cd58"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_888k/sampling_seed1.json",
+      "destination": "provenance/cell_extension_888k/sampling_seed1.json",
+      "sha256": "04a1b7abf1534f7f608dfef2f94393bede64efb4191c4dc10f9ac2a0bb4ac943"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_888k/sampling_seed2.json",
+      "destination": "provenance/cell_extension_888k/sampling_seed2.json",
+      "sha256": "aab6ed7064d512828d4392d0a91465bdca58d542cf769f35208837feffe537fd"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_1600k/prepare_extension.py",
+      "destination": "original_scripts/cell_extension_1600k/prepare_extension.py",
+      "sha256": "c5bdf640aedca4c82329c3e980b8df0ef10131c2b4a540552a0c49d78fd0315c"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_1600k/08_train_scgpt.py",
+      "destination": "original_scripts/cell_extension_1600k/08_train_scgpt.py",
+      "sha256": "21d3cf26713854f3c0ec1f159bf5f2d187d24b2330dacfc95b580c16281a6851"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_1600k/09_embed_dogma_scgpt.py",
+      "destination": "original_scripts/cell_extension_1600k/09_embed_dogma_scgpt.py",
+      "sha256": "c2f1321acffd8037e315a35a0ca276a9f7e67d6a6b8670f4634c3a711745658c"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_1600k/README.md",
+      "destination": "original_scripts/cell_extension_1600k/README.md",
+      "sha256": "ad09199b287d47f90830bd94459f2f5384dc8f935c0122846ffcea2cd9d60556"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_1600k/sampling_seed0.json",
+      "destination": "provenance/cell_extension_1600k/sampling_seed0.json",
+      "sha256": "cfe7be9c861ca13e0cfc47abad1ab14819b7ec7288d789ce8e8482a094370a8d"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_1600k/sampling_seed1.json",
+      "destination": "provenance/cell_extension_1600k/sampling_seed1.json",
+      "sha256": "0163ecabc08d5f1df9de11828b788c89adba527b4588848358c4cea25db14a7d"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_1600k/sampling_seed2.json",
+      "destination": "provenance/cell_extension_1600k/sampling_seed2.json",
+      "sha256": "0906fef885850b0f98402ef293bbcda56f36465c402845aabdbd73dc620421b5"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_1600k/direct_sources.py",
+      "destination": "original_scripts/cell_extension_1600k/direct_sources.py",
+      "sha256": "0c7eda600fa34a4452f8349e1e5ff75919fad16243442b7e5c191f5fc5412ba7"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_1600k/assemble_direct.py",
+      "destination": "original_scripts/cell_extension_1600k/assemble_direct.py",
+      "sha256": "61563200533e27cf1b0c0524acb184de200b9ab59f07ec6e4c1e6c2e8647c0b6"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_1600k/resumable_http.py",
+      "destination": "original_scripts/cell_extension_1600k/resumable_http.py",
+      "sha256": "9d678d37d350fcce8048122c2b2a12906a8478af430f74ea884be86c60ed1903"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/cell_extension_1600k/source_inventory.py",
+      "destination": "original_scripts/cell_extension_1600k/source_inventory.py",
+      "sha256": "6258eb643b7984d95739ccf056cd51fb527b3c24b6b0ee88e6d8c6cd35a037a1"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n2220_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n2220_scgpt/config.json",
+      "sha256": "cb9150f58768a81f195e245f20b8157854faf5db984b1eee68a3c9370f2c667a"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n2220_scgpt/vocab.json",
+      "destination": "assets/vocab.json",
+      "sha256": "8748be00569d79691685313610f3366fd8aae4c20a7d7e3c6a441b604293740c"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n2220_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n2220_scgpt/training_history.tsv",
+      "sha256": "773bf63c904918669d719c97e7482b4963f89536fef26bedaa5a7279b76be00b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n4440_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n4440_scgpt/config.json",
+      "sha256": "c9d9a05560adc271c8517f7fd5d51524d697910acbcb1184ffe5ee8d2274ae2a"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n4440_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n4440_scgpt/training_history.tsv",
+      "sha256": "f0751fda8fa4a41459573ffbed4bdb4bb6a731f9266c56e0b72d26dbba5bd091"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n8880_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n8880_scgpt/config.json",
+      "sha256": "9baeac7fab4ce65c368f536aff3e39fa9b14f788202d4fac920f786bd129f0b3"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n8880_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n8880_scgpt/training_history.tsv",
+      "sha256": "4ff362c61e86f62bcf82de6b7f9e66f2c81fa13b0e195da9585118522508524c"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n17760_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n17760_scgpt/config.json",
+      "sha256": "3953d5da79c6bf046445ef1d1701e191ea9727f7a47f7fd44703cac7c6244afe"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n17760_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n17760_scgpt/training_history.tsv",
+      "sha256": "dbcb3ff5b3d8d510e6e987b3e6a19744e94acf5151b41a8c95719fc3276b5cc1"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n35520_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n35520_scgpt/config.json",
+      "sha256": "9302514b111687045ad72ccca146834e3860fcf82164d725165ef27e5344bcaf"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n35520_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n35520_scgpt/training_history.tsv",
+      "sha256": "f70361e29477e1cb6b853ec8ceb970d412f79392e42e8fc7a810dede31579204"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n71040_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n71040_scgpt/config.json",
+      "sha256": "85e30a7e86cec493e26d691b3ca88cd58bde976ad7f15482de64e6ef65f725df"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n71040_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n71040_scgpt/training_history.tsv",
+      "sha256": "7ae00ad5ac98381934b676e9398269f7ae980f9e6ea9bddb05c79d89e1dfb242"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n142080_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n142080_scgpt/config.json",
+      "sha256": "fc896a755bfb9b4217d1da6a3b28b03ab884e734d7c72001a24d04d8635ca639"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n142080_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n142080_scgpt/training_history.tsv",
+      "sha256": "c1b3d882fed167e087ee92256da8410942d6c0595830c8959251221a4506263b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n222000_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n222000_scgpt/config.json",
+      "sha256": "fc80d80fab3c5074ac96c993f26ef7286b9d61050d207c98a858174ca6433522"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed0_n222000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n222000_scgpt/training_history.tsv",
+      "sha256": "96197f24916be69cd808876e28884a1181d05fc0b8516253f8ea190f1e71b133"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho0250_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n222000_rho0250_scgpt/config.json",
+      "sha256": "6541337cb73be1bc1ee74a6af4a455a05183e94eafa69d4e5dc64be0237dad0b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho0250_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n222000_rho0250_scgpt/training_history.tsv",
+      "sha256": "a6aad37d2345ba5db2f3c44fb3b614c0fe9711f24b74968f968b37f2cb14aabf"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho0500_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n222000_rho0500_scgpt/config.json",
+      "sha256": "c9dfde965186bc6eaccf936bea919b3eefc0e68e658b5aa2e64f4e8a88004a0e"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho0500_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n222000_rho0500_scgpt/training_history.tsv",
+      "sha256": "bae575ac9bd59269e87a8d9013731012e3088d6310c62f0a55a558cf1d7fdaaa"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho1000_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n222000_rho1000_scgpt/config.json",
+      "sha256": "1c1b8654e344c4856a25db036f7213d13070ff18373d8a309fcbece0b541df92"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho1000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n222000_rho1000_scgpt/training_history.tsv",
+      "sha256": "a2509acc6f91eced2a48184724defad27c36aad7a69218be30647e563ef1718b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho2000_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n222000_rho2000_scgpt/config.json",
+      "sha256": "0426b6a54aa983d1232c9c45b45c4964d946a5303fd6c6279b3ae0a41212fabc"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho2000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n222000_rho2000_scgpt/training_history.tsv",
+      "sha256": "5d8690a92acfa1cc63337011e4f9c09f93a25613d636e28e443e09445e6eb8ad"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho4000_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n222000_rho4000_scgpt/config.json",
+      "sha256": "d1e15219f103f3cc2b1f51b8048f10f8cb5c4cf221a8c0c7790160296c2b79d6"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho4000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n222000_rho4000_scgpt/training_history.tsv",
+      "sha256": "ea0535f9c011d13cb479632fa02358a4e260365cee3ca87fd0b8cd4d9419ae39"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho7000_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n222000_rho7000_scgpt/config.json",
+      "sha256": "20ddddf15a4539a3ec83624cfd6681adf01c36a9f99d86b2d0f6dfede3bd26fd"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed0_n222000_rho7000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n222000_rho7000_scgpt/training_history.tsv",
+      "sha256": "8ebbb999bc4247fe7b3a6b2d99620abaa478c18d84b194924de969819bf43b80"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n2220_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n2220_scgpt/config.json",
+      "sha256": "c4d562ac27f5b153d5aa94399941cb80d449151c00a25db84878bef53ade9676"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n2220_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n2220_scgpt/training_history.tsv",
+      "sha256": "bd936d9c7d9b3e145aaf37332eaa292dba93c8ca9cbb2896ee69913b0314e419"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n4440_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n4440_scgpt/config.json",
+      "sha256": "fd1059c26c5b1d069151dffb19cee4ed9b35fcfc48748b9eea88b885d9f1d002"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n4440_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n4440_scgpt/training_history.tsv",
+      "sha256": "37c8cc3cd8f0538c1dccc8eda7cdc44de4d695d8037a4e42766c8f279dc565b7"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n8880_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n8880_scgpt/config.json",
+      "sha256": "3ff1fb4c3a66218ed1378107862070527493beedbb6ea8dd26b29dd43e772f29"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n8880_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n8880_scgpt/training_history.tsv",
+      "sha256": "dc41eefc4249afbf9a451dea7af16b42413fd017bdc73f71a3378b4673d67298"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n17760_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n17760_scgpt/config.json",
+      "sha256": "9b068b4fb726c7109667c9feaff1d2aa6dbe736fa714083c104e320a02ccc94d"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n17760_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n17760_scgpt/training_history.tsv",
+      "sha256": "734278a39d7cdd2acdec5cfbc1033d04f85cc27c483bec9030e7fd3a88423aed"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n35520_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n35520_scgpt/config.json",
+      "sha256": "a880ce76056735cbf431a1e832a8019c04164c8f098d1cd4bed655698655b7b3"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n35520_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n35520_scgpt/training_history.tsv",
+      "sha256": "6bc92fe3514a18cdbf990ad8a66ffb9d1b05c9c7abf31b3630ef3bf41181cbe8"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n71040_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n71040_scgpt/config.json",
+      "sha256": "eb0278d06ff9d62aef913d0cfac45ef9b75124ad5d062f1006ca53c5380ff850"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n71040_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n71040_scgpt/training_history.tsv",
+      "sha256": "1404d4dd8eb402c0702b8ba7e3fc6e8c67bb91d59f54a6197223146d250985d1"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n142080_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n142080_scgpt/config.json",
+      "sha256": "56900928340e6f0bb64389b228efce4a322cf36aa8c6abc0f8876e9d28cdd2c5"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n142080_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n142080_scgpt/training_history.tsv",
+      "sha256": "58455171e0696f0235d87e6fdcaa54612db17ce0d3df0e1790509a8c9e87791a"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n222000_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n222000_scgpt/config.json",
+      "sha256": "0d2ec4c716eaa27e7f8e56bc378c686ea9d91dd68f426365ca12547646b9e6ab"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed1_n222000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n222000_scgpt/training_history.tsv",
+      "sha256": "852b44c460dcef429d6cd4a2a413fe532392f7b4dddc715f439c6cfe45bcbbd1"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho0250_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n222000_rho0250_scgpt/config.json",
+      "sha256": "248db83c0b04b0509a60992bc4f8a13c476a7f0587ac2078f5a4a8b2773ff377"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho0250_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n222000_rho0250_scgpt/training_history.tsv",
+      "sha256": "d75dfa7b68c3d75650e509db40100fabd03cb215fbf58870e076da77e028d9d0"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho0500_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n222000_rho0500_scgpt/config.json",
+      "sha256": "8af9fcfc3ebf393ca7de2659cac2e729a31dccfdcaab0a518f78ca5b9607e80e"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho0500_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n222000_rho0500_scgpt/training_history.tsv",
+      "sha256": "2b54d4c14dc120cb0e2230ae6da7fd99b1a4900476c1b2ba6890e6939c4e75a2"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho1000_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n222000_rho1000_scgpt/config.json",
+      "sha256": "b3138a22e3dbf7cba58dfbc26f529b76a004bd5d2f6a951bc167d35db8772c0f"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho1000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n222000_rho1000_scgpt/training_history.tsv",
+      "sha256": "c25f9bfccb74b91c54c92a4480876d9823e894e1bcbbc33966ed2d98098e47bd"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho2000_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n222000_rho2000_scgpt/config.json",
+      "sha256": "1f2bce7a445826b443aabe54f54ef1da028b0a5b55bcc25cc06fa94b56cb07d2"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho2000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n222000_rho2000_scgpt/training_history.tsv",
+      "sha256": "59e71eaae97c1979815d83c3f0247d7ec98db1abdd4e0e29053b3967f0153b1b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho4000_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n222000_rho4000_scgpt/config.json",
+      "sha256": "d8cc2b737b422120ce16fe3c0d8336e7c357418376f26697d5e3aa8135a7d676"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho4000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n222000_rho4000_scgpt/training_history.tsv",
+      "sha256": "e9cea9caaa01d6ee18f8cb64269be628366e6fa84d4253dd5497cb4464a82a7a"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho7000_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n222000_rho7000_scgpt/config.json",
+      "sha256": "ebf2efcef22425d23e60d5987e50fd5cd4a93bbe7b933a766fc30050f5ef0d97"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed1_n222000_rho7000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n222000_rho7000_scgpt/training_history.tsv",
+      "sha256": "9bec484e58b13745297e5f8e9a5af58abe4c197f23053098f1ee3f3231e81c9a"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n2220_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n2220_scgpt/config.json",
+      "sha256": "1ea141a07d70dd2c8dfacd7a7c0321eeb2f9702e596ffffe74cd653add5ff7fd"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n2220_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n2220_scgpt/training_history.tsv",
+      "sha256": "3f0022057a6fded659654a67212fe184cca59bb88998e170eeefb1535edc38c5"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n4440_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n4440_scgpt/config.json",
+      "sha256": "547274054d744e29a1836b29db4f57a5b99a2b46d488a391e12d9594e54de4a4"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n4440_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n4440_scgpt/training_history.tsv",
+      "sha256": "3ce82890dc469080895881e30b409ae66c8ac234e951195f0396afc5e296dd83"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n8880_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n8880_scgpt/config.json",
+      "sha256": "48743d9d68b61de94a0d66a703e6d33a276d0ff5d21720956ff9f9254aa8197e"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n8880_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n8880_scgpt/training_history.tsv",
+      "sha256": "ef7bb6cb6da129115eff558531dcf7f923d0862dcc2435a0029f9f22375c6bfb"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n17760_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n17760_scgpt/config.json",
+      "sha256": "1971771e2b1faa30fb8faa2f54fe63089616275eff92653288d25e18d59c30f9"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n17760_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n17760_scgpt/training_history.tsv",
+      "sha256": "f6c6303ff5de81970cafd656f09b9e270b8b1ced9d77d664c3743d155aa0f3cb"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n35520_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n35520_scgpt/config.json",
+      "sha256": "5dc685dda1ef73b4816cc3a9d2635028e6aabb5d2cd3672147c8abcb9737f65f"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n35520_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n35520_scgpt/training_history.tsv",
+      "sha256": "b9f4cf134313f9842628ffbefcf541241d6708012fadf52e23a900f3cb44d1f1"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n71040_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n71040_scgpt/config.json",
+      "sha256": "e564a15ea4e74ad5f2eda7a6ff2e0eac4bf69e6e154dd4ff264f2b6c4fa52e1f"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n71040_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n71040_scgpt/training_history.tsv",
+      "sha256": "f3087029aa32d3d2fcbac2ced3b1a3490a5b76d30b5f306604b54a180f32296b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n142080_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n142080_scgpt/config.json",
+      "sha256": "ae5a51c01ddc91333080e5636919db13fda9af9a48cdb9f40044703908571c52"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n142080_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n142080_scgpt/training_history.tsv",
+      "sha256": "4bbd86edccc9dd47ad458b25cdb20679e503508e89d86b29ddddb19799f2af71"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n222000_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n222000_scgpt/config.json",
+      "sha256": "5e18a172f5f31133f9b1d47785d0368e72a01015e2aa11071a75d7607007695b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/scgpt_checkpoints/sctab_seed2_n222000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n222000_scgpt/training_history.tsv",
+      "sha256": "d33556b116ea186df4cb34a27b23425193136eccf061da52bdff20daa61d2889"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho0250_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n222000_rho0250_scgpt/config.json",
+      "sha256": "d5fe487416321c3420a63cf1333ce296b81a199ed5399cc3e9d3b9219dc6742e"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho0250_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n222000_rho0250_scgpt/training_history.tsv",
+      "sha256": "6bb47813ecbec35593e301f535675924b67fb86168bfa47efd69730eb64ba2fb"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho0500_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n222000_rho0500_scgpt/config.json",
+      "sha256": "8fe8e3543d49a4f1f027df1831bc527df4c6f5ae0e2906218cf403161805a89b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho0500_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n222000_rho0500_scgpt/training_history.tsv",
+      "sha256": "002d05f16438d28ec64abed797e9c6808e0e6e77881d58a4a4bf4c985dcaa24f"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho1000_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n222000_rho1000_scgpt/config.json",
+      "sha256": "b28b558f2d88fe6ae00ca2a50805379d23fa49137d60a54e3bdf44e026941062"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho1000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n222000_rho1000_scgpt/training_history.tsv",
+      "sha256": "a20fd944cb30903c5b581f756f4c465a198709cb92d985e225e9bb40b6cdb16b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho2000_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n222000_rho2000_scgpt/config.json",
+      "sha256": "7a78a5b2a95551bd2290ef31f721d157b2da9a2bd3a0d85891af4c414c1a1a7d"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho2000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n222000_rho2000_scgpt/training_history.tsv",
+      "sha256": "5ddd427154c5e102ac099b9896dd1b1d5f6c101db2ba273266dbc76e94b48b44"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho4000_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n222000_rho4000_scgpt/config.json",
+      "sha256": "54f4d7df61964f951961236276d35b1ba054ef12c4da9e953188b504d0ac0cb4"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho4000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n222000_rho4000_scgpt/training_history.tsv",
+      "sha256": "2262d035e96d99aab832f1c9b73ff812530fa9d945c195755775b7e9e7710a4c"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho7000_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n222000_rho7000_scgpt/config.json",
+      "sha256": "f6cdcbebf5a4ffd5a6b348e00b9b90db73053008de20dc1f20c752f263451e90"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/pretraining_umi_scaling/scgpt_checkpoints/sctab_seed2_n222000_rho7000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n222000_rho7000_scgpt/training_history.tsv",
+      "sha256": "9be14f9ca1943baee6980e6e045a841de167c6e7eff41f455a031ed743f140cd"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed0_n444000_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n444000_scgpt/config.json",
+      "sha256": "259b07f33815c95b890753852153a1cc7d8c6d8742bcccbec8604a08372df5be"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed0_n444000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n444000_scgpt/training_history.tsv",
+      "sha256": "8ff4fac214dee10075288488c0058e639ed570438dfd857e15eec4b18d658855"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed0_n888000_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n888000_scgpt/config.json",
+      "sha256": "0d94ab78f6de17dcf4d0225e770254b4107504307259113862a5e4b29e99cd64"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed0_n888000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n888000_scgpt/training_history.tsv",
+      "sha256": "6db2e71e2efb237a3c74101bdd2039ae0f829f230cfe3b748cb63d4f5b9f6cea"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed1_n444000_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n444000_scgpt/config.json",
+      "sha256": "54b0da223d34c0683115e72927a7a8d5294062b89f497cd323c6c6596aa3d3e3"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed1_n444000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n444000_scgpt/training_history.tsv",
+      "sha256": "c5e041c4e18821ffe726d69a27eeb9fcde6a1f581e9bc43e90d7895f189bba6b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed1_n888000_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n888000_scgpt/config.json",
+      "sha256": "a28abe92a6f6e00fa679bd93956a663911e58a32a3cc553f3c7a792ce361e080"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed1_n888000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n888000_scgpt/training_history.tsv",
+      "sha256": "bbfe0542e255cb0cdf9207b81dacf6b58c41771698b2338563d818acaada366b"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed2_n444000_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n444000_scgpt/config.json",
+      "sha256": "6515c61036fc8db08661ba7684c0b6204548e82cfcc929f2876245507489fe20"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed2_n444000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n444000_scgpt/training_history.tsv",
+      "sha256": "543b6dce4cbdcf5cc82cccd43457abe764f93d3d63e9c87319379ecb3ffe3d89"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed2_n888000_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n888000_scgpt/config.json",
+      "sha256": "ccc9b3637b0cdc5960c05272c9c80d3e7bdc5b385d5e09377b62b49805a51f7a"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_888k/scgpt_checkpoints/sctab_seed2_n888000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n888000_scgpt/training_history.tsv",
+      "sha256": "00cd10c7befa5cf50be6b16e050b43468da39f103cbcc0843b13c8ac1437f7c8"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_1600k/scgpt_checkpoints/sctab_seed0_n1600000_scgpt/config.json",
+      "destination": "configs/sctab_seed0_n1600000_scgpt/config.json",
+      "sha256": "7e72341a206febc0206bd58a896554ea85537fee2b03d06a2bdfbfd33f1b6b4d"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_1600k/scgpt_checkpoints/sctab_seed0_n1600000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed0_n1600000_scgpt/training_history.tsv",
+      "sha256": "7ed1c18e2c16edc2b837fad4b28a0874c0f24158b205532b9a74b0ea02db3e02"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_1600k/scgpt_checkpoints/sctab_seed1_n1600000_scgpt/config.json",
+      "destination": "configs/sctab_seed1_n1600000_scgpt/config.json",
+      "sha256": "f1b2f085b57e3831597fa19315f1e2054c2a4e684538b760fb730a669758f516"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_1600k/scgpt_checkpoints/sctab_seed1_n1600000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed1_n1600000_scgpt/training_history.tsv",
+      "sha256": "a75ad59fa897871655e426e29f07541e598de4147d3a286a5e56a2708b26e339"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_1600k/scgpt_checkpoints/sctab_seed2_n1600000_scgpt/config.json",
+      "destination": "configs/sctab_seed2_n1600000_scgpt/config.json",
+      "sha256": "ca25f9f450d3dc0fc1b25b4fbcf32cedae7a09fe9f5c573d2cb9329144c5d7df"
+    },
+    {
+      "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/cell_extension_1600k/scgpt_checkpoints/sctab_seed2_n1600000_scgpt/training_history.tsv",
+      "destination": "training_records/sctab_seed2_n1600000_scgpt/training_history.tsv",
+      "sha256": "b296976708beaf74b49cc115da67b8a0cba6726234daa7430248d1307b96e910"
+    }
+  ],
+  "scgpt_git_commit": "cebd6fae655b9c585a4807daa3ac31bb764f06b4",
+  "vendor_changes": [
+    "Minimal scgpt/__init__.py logger/version only",
+    "Minimal scgpt/model/__init__.py exporting TransformerModel only"
+  ],
+  "implementation_note": "All other vendored files are byte-for-byte copies of server runtime sources; compare SHA256 in this file. Current source snapshot does not prove every historical file was identical at training time."
+}

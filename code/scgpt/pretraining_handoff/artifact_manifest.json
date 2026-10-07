@@ -1,0 +1,50 @@
+{
+  "shared_root": "/n/holylabs/rongma_lab/Lab/sijiazhu/scinfodesign/code/handoffs/scgpt_pretraining_20261006/artifacts",
+  "archives": [
+    {
+      "name": "scgpt_weights.tar.gz",
+      "bytes": 221100009,
+      "sha256": "1c0ea78a3f81ba781092423c85c449fbfc52011a8b840355b1651fe1beb13ad1",
+      "shared_server_path": "/n/holylabs/rongma_lab/Lab/sijiazhu/scinfodesign/code/handoffs/scgpt_pretraining_20261006/artifacts/scgpt_weights.tar.gz"
+    },
+    {
+      "name": "scgpt_sampling.tar.gz",
+      "bytes": 59487676,
+      "sha256": "931c67ee05e6b3fe85e9e5cb14fbfbea35d3bbf0cda66c7a044c423c8b23f610",
+      "shared_server_path": "/n/holylabs/rongma_lab/Lab/sijiazhu/scinfodesign/code/handoffs/scgpt_pretraining_20261006/artifacts/scgpt_sampling.tar.gz",
+      "drive_url": "https://drive.google.com/file/d/1NTWGXhrdVXX3p2I7Xd81Tn6ToLMHKqVh/view?usp=drivesdk"
+    },
+    {
+      "name": "scgpt_weights_seed0.tar.gz",
+      "bytes": 73695152,
+      "sha256": "95a87568ddd3bb55ff91419488e3b02808b17f60c44e7e733675f8826affb1e7",
+      "md5": "3d5029fa3fa23b63601c8559297f99a0",
+      "shared_server_path": "/n/holylabs/rongma_lab/Lab/sijiazhu/scinfodesign/code/handoffs/scgpt_pretraining_20261006/artifacts/scgpt_weights_seed0.tar.gz",
+      "sampling_seed": 0,
+      "checkpoints": 17,
+      "drive_url": "https://drive.google.com/file/d/1Ch_QYGz6GgP5MN1lpp5DQ_wMBA0Wmt89/view?usp=drivesdk"
+    },
+    {
+      "name": "scgpt_weights_seed1.tar.gz",
+      "bytes": 73697207,
+      "sha256": "edc6ebfbb9ed5357f7aed6d56491e0fff744259a4ec838873bab91fa62c356f5",
+      "md5": "e8133d2d707cfd01ed6cfc86b497ddef",
+      "shared_server_path": "/n/holylabs/rongma_lab/Lab/sijiazhu/scinfodesign/code/handoffs/scgpt_pretraining_20261006/artifacts/scgpt_weights_seed1.tar.gz",
+      "sampling_seed": 1,
+      "checkpoints": 17,
+      "drive_url": "https://drive.google.com/file/d/1sPpAHFc1sXs4GDv7PV_KSjZxHrlidtk4/view?usp=drivesdk"
+    },
+    {
+      "name": "scgpt_weights_seed2.tar.gz",
+      "bytes": 73694856,
+      "sha256": "6b1620cfff14bd95e6876464b99d831eb9972cdc64769d2584bbef3d643447a0",
+      "md5": "0c7e37874cc0b942b6d71fbf7e5f10af",
+      "shared_server_path": "/n/holylabs/rongma_lab/Lab/sijiazhu/scinfodesign/code/handoffs/scgpt_pretraining_20261006/artifacts/scgpt_weights_seed2.tar.gz",
+      "sampling_seed": 2,
+      "checkpoints": 17,
+      "drive_url": "https://drive.google.com/file/d/1Wx8NMNvN1ar1fUNaHEaW7PGBSssV5FOA/view?usp=drivesdk"
+    }
+  ],
+  "access": "Four archives uploaded to Google Drive; metadata sizes verified. Owner must enable Anyone with the link / Viewer in Drive UI; connector cannot set public permissions. Public access not yet verified.",
+  "drive_folder_url": "https://drive.google.com/drive/folders/1YRIyI1ouMp_Qrsl9l8JiAe12Qk8yH0jk"
+}

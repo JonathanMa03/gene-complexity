@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "checkpoints": 51,
+  "cell_number_checkpoints": 33,
+  "depth_checkpoints": 18,
+  "weight_hashes_match_configs_and_success": true,
+  "final_epochs_verified": 10,
+  "panel_genes": 2000,
+  "vocab_entries": 2003,
+  "sampling_prefix_and_actual_input_identity": "51/51, see provenance/sampling_validation.json",
+  "smoke_shape": [
+    8,
+    128
+  ],
+  "numeric_values_finite": true,
+  "l2_norm_range": [
+    0.9999999403953552,
+    1.0000001192092896
+  ],
+  "output_cell_ids_pickle_free": true,
+  "overlap_positive_control": {
+    "test_cells": 2220,
+    "expected_overlap": 2220,
+    "observed_overlap": 2220
+  },
+  "vendored_source_hashes_verified": true,
+  "python_syntax_checks": "PASS",
+  "weights_not_in_git": true,
+  "raw_data_not_in_git": true,
+  "gpu_jobs_submitted": 0,
+  "full_training_rerun": false,
+  "limitations": [
+    "Fresh-install/cross-platform execution not validated",
+    "External weights require lab filesystem or authorized FASRC access",
+    "Exact expression-profile overlap for a new dataset is not established by ID audit"
+  ],
+  "native_source_embedding_bitwise_match": true,
+  "portable_gene_order_matches_native_csr": true,
+  "weight_retrieval_sha_verified": true
+}

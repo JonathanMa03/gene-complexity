@@ -1,0 +1,30 @@
+{
+  "census_version": "2023-05-15",
+  "records": [
+    {
+      "sampling_seed": 0,
+      "original_path": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_1600k/sctab_seed0_n1600000_cells.parquet",
+      "archive_relative_path": "sampling/sctab_seed0_n1600000_cells.parquet",
+      "bytes": 29670448,
+      "sha256": "06b85db14556fef007c4f247e022ba89152139c8d6f9879fef27154386520ece"
+    },
+    {
+      "sampling_seed": 1,
+      "original_path": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_1600k/sctab_seed1_n1600000_cells.parquet",
+      "archive_relative_path": "sampling/sctab_seed1_n1600000_cells.parquet",
+      "bytes": 29648391,
+      "sha256": "d2c7e91586c69bcb7dd861bebe7894cdfaa7dede83fbaa10f5f5b6bcdddde049"
+    },
+    {
+      "sampling_seed": 2,
+      "original_path": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/cell_extension_1600k/sctab_seed2_n1600000_cells.parquet",
+      "archive_relative_path": "sampling/sctab_seed2_n1600000_cells.parquet",
+      "bytes": 29664287,
+      "sha256": "8d85a228d03fd930b2978fa2b09963eeffb986b4b919a1c8a09a11198cdf430b"
+    }
+  ],
+  "expected_rows_per_seed": 1600000,
+  "small_sets": "ordered prefix of the maximum manifest; prefix identities verified in validation",
+  "id_scope": "soma_joinid is release-specific; compare only within this Census release",
+  "depth_warning": "Manifests describe candidate raw input cells; depth thinning may remove all-zero-panel cells, as recorded per checkpoint. Use raw matrices to determine exact retained rows."
+}

@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "shape": [
+    8,
+    128
+  ],
+  "dtype": "float32",
+  "all_finite": true,
+  "min": -0.1524333357810974,
+  "max": 0.16563081741333008,
+  "norm_min": 0.9999999403953552,
+  "norm_max": 1.0000001192092896,
+  "minimum_between_cell_distance": 0.03475113585591316,
+  "parameters": 1166466,
+  "trainable_parameters": 0,
+  "model_id": "sctab_seed0_n2220_scgpt",
+  "checkpoint_sha256": "993c410daa16f354013dc7b30b3499d0f198cf87749aa7c4a2553915ffe2c21e",
+  "config_sha256": "cb9150f58768a81f195e245f20b8157854faf5db984b1eee68a3c9370f2c667a",
+  "panel_sha256": "e7ea89b851d7d0c8c2c370801d2c89dd031468942cdff9523bba356c42b0591e",
+  "input_path": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/data/nested_raw/seed_0/sctab_seed0_n2220_raw.h5ad",
+  "input_cells_total": 2220,
+  "limit": 8,
+  "output_sha256": "43d96db9784bfd5172da2cff7397463155e34674bae91c68f00041a79c9860b8",
+  "seed": 2026092500,
+  "batch_size": 8,
+  "device": "cpu",
+  "precision": "float32",
+  "normalization": "CLS L2",
+  "coverage": {
+    "panel_genes": 2000,
+    "present_panel_genes": 2000,
+    "missing_panel_genes": 0,
+    "duplicate_matched_columns": 0,
+    "gene_ordering": "native CSR panel slicing; nonzero input order preserved"
+  },
+  "note": "Matches native cell-to-text extraction; historical DOGMA extraction used BF16. No cross-device bitwise-equivalence claim. Full input hash not computed for a limited smoke run."
+}
