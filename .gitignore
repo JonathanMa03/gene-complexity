@@ -292,3 +292,7 @@ __pycache__/
 # Downloaded datasets and local AnnData files
 /data/raw/
 *.h5ad
+
+# Baron preprocessing outputs (generated locally)
+/data/processed/
+/data/baron_gene_symbols.csv
