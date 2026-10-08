@@ -1,0 +1,176 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array}
+\usepackage[colorlinks=true,urlcolor=blue,linkcolor=blue]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{1em}
+
+\title{Sparse Dictionary Learning for Single-Cell Classification\\
+\large Theory and Design Note}
+\author{Jonathan Ma\\EN.553.740 Machine Learning 1\\Instructor: Dr. Sichen Yang}
+\date{October 7, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Purpose and scope}
+This note specifies the dictionary-learning component of \emph{Interpretable Gene Programs or Foundation Models? Comparing Sparse Dictionary Learning and scGPT for Single-Cell Classification}. The goal is to learn an inspectable representation from the target training data and compare its classification utility with frozen scGPT embeddings and a processed-expression baseline. This is a proposed design, not a report of completed experiments. The initial implementation will establish a reproducible fit, transform, and export interface before large-scale tuning.
+
+\section{Representation and objective}
+Let $X\in\mathbb{R}^{n\times p}$ be the processed training expression matrix, with cells in rows and retained genes in columns. Let $D\in\mathbb{R}^{K\times p}$ be a dictionary whose rows $d_k$ are gene programs, and let $Z\in\mathbb{R}^{n\times K}$ contain cell-specific coefficients. We approximate
+\[
+X\approx ZD,\qquad x_i\approx\sum_{k=1}^{K}z_{ik}d_k.
+\]
+The proposed estimator solves
+\begin{equation}
+\min_{Z,D}\;\frac12\lVert X-ZD\rVert_F^2+\lambda\lVert Z\rVert_1
+\quad\text{subject to}\quad \lVert d_k\rVert_2\leq 1\quad(k=1,\ldots,K),
+\label{eq:objective}
+\end{equation}
+where $\lVert Z\rVert_1=\sum_{i,k}|z_{ik}|$ and $\lambda>0$. Reconstruction encourages fidelity to expression structure, while the entrywise $\ell_1$ penalty encourages sparse cell representations.
+
+The dictionary constraint prevents a scaling degeneracy: replacing $(Z,D)$ by $(Z/c,cD)$ leaves $ZD$ unchanged but divides the penalty by $c$. Bounding atom norms prevents this escape. Signed coefficients and signed atoms are allowed in the initial design, consistent with Equation~\eqref{eq:objective}; nonnegative factorization would be a different model and is not assumed.
+
+The numerical meaning of $\lambda$ depends on the preprocessing scale and objective convention. The implementation must document whether reconstruction error is summed or averaged and match regularization accordingly. Dividing the \emph{entire} objective by $n$ preserves its minimizers; dividing only the reconstruction term does not preserve the same effective penalty.
+
+\section{Sparse coding and optimization}
+\subsection{Encoding with a fixed dictionary}
+For a fixed $D$, rows of $Z$ can be estimated independently:
+\begin{equation}
+\widehat z_i=\arg\min_{z\in\mathbb{R}^{K}}
+\left\{\frac12\lVert x_i-zD\rVert_2^2+\lambda\lVert z\rVert_1\right\}.
+\label{eq:encode}
+\end{equation}
+This is a convex Lasso problem~\cite{tibshirani1996} with design matrix $D^\top$; correlated or redundant atoms can make the solution nonunique. Larger penalties favor smaller coefficient magnitudes and, typically, fewer active atoms, but predictive accuracy need not change monotonically.
+
+For illustration, a proximal-gradient update is
+\[
+z^{(t+1)}=S_{\eta\lambda}\!\left(z^{(t)}-\eta(z^{(t)}D-x_i)D^\top\right),
+\]
+where $S_a(u)=\operatorname{sign}(u)\max(|u|-a,0)$ acts entrywise. For nonzero $D$, a step size $0<\eta\leq1/\lVert DD^\top\rVert_2$ is a standard conservative choice. Proximal methods and their accelerated variants are developed by Beck and Teboulle~\cite{beck2009}. The update above is the unaccelerated step, not the full FISTA algorithm. This explains the role of soft thresholding; it does not require writing a custom solver for the first baseline.
+
+\subsection{Learning the dictionary}
+With $Z$ fixed, updating $D$ is a convex constrained least-squares problem. A projected-gradient step takes
+\[
+\widetilde D=D-\eta_D Z^\top(ZD-X),\qquad
+ d_k^{\mathrm{new}}=\frac{\widetilde d_k}{\max(1,\lVert\widetilde d_k\rVert_2)}.
+\]
+An appropriate step size is needed; arbitrary gradient steps followed by projection do not guarantee improvement. Alternating sparse-code and dictionary updates exploits the blockwise convex structure, but the joint problem is nonconvex and initialization matters. Exact block minimization cannot increase the objective, yet this does not establish convergence to a global optimum. Mini-batch or approximate updates require their own convergence diagnostics.
+
+Mairal et al.~\cite{mairal2010} provide a scalable online approach to dictionary learning with sparsity penalties and constrained atoms. The first implementation should use an established dictionary-learning solver, with its loss convention, encoding algorithm, stopping tolerances, and random seed recorded. In particular, verify that the transformation routine solves the intended penalized sparse-coding problem rather than silently using a different sparsity rule. Monitor reconstruction, sparsity, iteration limits, and unused atoms.
+
+\section{Preprocessing and leakage boundaries}
+The preprocessing teammate should provide stable, unique cell IDs; labels; shared training, validation, and test assignments; ordered gene IDs; and available donor, study, or sequencing-technology metadata. Choose grouped splits when scientifically appropriate metadata permit them. Technology is not automatically a donor identifier.
+
+The proposed classical pipeline uses documented normalized/log-transformed expression, training-selected variable genes, and a documented training-fitted scaling rule. Exact choices remain to be agreed with preprocessing. Do not assume a layer named \texttt{counts} establishes raw-count provenance. Preserve the original data and record transformations explicitly.
+
+Fit gene selection, centering/scaling, and dictionary estimation on training cells only. Apply the fitted gene ordering and transforms unchanged to validation and test cells. For cross-validation, fit these components separately within each training fold. Avoid densifying the full expression matrix unnecessarily; centering sparse matrices can greatly increase memory use.
+
+scGPT may require its own fixed panel and raw-count processing. The dictionary gene set need not match that panel. The comparison must share cell identities, labels, and evaluation splits, not force incompatible input transformations. Any scGPT-related cell exclusion must be resolved centrally so all methods are evaluated on the same retained cells.
+
+\section{Training, tuning, and held-out encoding}
+\begin{enumerate}
+\item Fit the classical preprocessing on the training partition and construct $X_{\mathrm{train}}$.
+\item Learn $D$ and training codes for a small, prespecified set of dictionary sizes $K$ and penalties $\lambda$; choose numerical penalty values only after the feature scale is fixed.
+\item Encode validation cells using Equation~\eqref{eq:encode} with $D$ fixed. Train the common regularized multinomial logistic classifier on training codes and evaluate on validation codes.
+\item Select settings using a stated training/validation procedure and budget. Record any classifier-side scaling and fit it only on training codes. Coordinate classifier regularization budgets across the representation methods.
+\item Freeze the selected pipeline and evaluate the final test partition once. If refitting on training plus validation data is chosen, refit all classical components on that union and re-encode its cells and test cells consistently; do not combine codes from different fitted dictionaries.
+\end{enumerate}
+
+The initial baseline should use one documented dictionary seed. Later robustness runs may vary initialization using the same splits. Dictionary seeds and scGPT pretraining sampling seeds describe different sources of variation and should not be treated as equivalent replicates. Neither representation parameters nor checkpoints should be selected using final test performance.
+
+\section{Interpretability and evaluation}
+Report classification Macro-F1 as the primary metric, together with balanced accuracy and multiclass predictive log loss. Use the same held-out cells and consistent class/probability ordering for every method. The classifier and comparative-analysis teammate owns these downstream evaluations.
+
+For the dictionary component, report reconstruction error, the fraction of coefficients whose magnitudes exceed a declared numerical tolerance, and atom usage. Inspect genes with the largest positive and negative weights separately and summarize signed activation by cell type. These summaries are descriptive associations, not evidence of causal biological mechanisms.
+
+Atom signs and ordering are not identifiable: flipping both an atom and its coefficient column, or jointly permuting atoms and coefficient columns, leaves reconstruction unchanged. Compare programs across runs only after appropriate matching and sign alignment. Correlated atoms can also split or share expression patterns, so a single atom should not automatically be interpreted as a unique pathway.
+
+\section{Proposed artifact contract}
+\begin{center}
+\begin{tabular}{p{0.23\textwidth}p{0.68\textwidth}}
+\toprule
+Artifact & Required contents \\
+\midrule
+Cell codes & $Z$ of shape $(n_{\mathrm{cells}},K)$ with ordered, unique cell IDs and a dictionary/run identifier. \\
+Dictionary & $D$ of shape $(K,p)$ with ordered gene IDs and atom identifiers. \\
+Fitted pipeline & Gene selection, scaling parameters, encoding settings, $K$, $\lambda$, solver version, seed, and convergence diagnostics. \\
+Provenance & Dataset/version or checksum, split-manifest identity, preprocessing choices, exclusions, and training-cell identity. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Prefer numeric arrays and string IDs that can be read without object pickling for shared feature exports. Labels and splits should come from the common cell-ID table. Validate joins explicitly: reject duplicate IDs, missing or extra cells, nonfinite features, and inconsistent gene ordering. Do not align representations by row position alone. Different representation dimensions are expected; no adapter to scGPT's 128 dimensions is required.
+
+\section{First implementation milestone}
+Begin with a small synthetic matrix generated from a known sparse factorization, optionally with noise. Check the fit/transform/export path, finite values, atom norm constraints, dimensions, ID preservation, and whether held-out encoding leaves the dictionary unchanged. Confirm that export/reload preserves the representation. Because factors are nonidentifiable, do not demand exact elementwise recovery of the generating dictionary.
+
+Then run a modest real-data pilot after preprocessing is agreed. Compare reconstruction with a simple reference such as the zero reconstruction, report sparsity and runtime, and inspect a few atoms before expanding tuning. Low reconstruction error alone does not establish useful cell-type information or biological interpretability.
+
+\section{Decisions still open}
+The team must finalize the compatible downstream data source, classical normalization and scaling, gene selection, shared split policy, cell exclusions, hyperparameter budget, and artifact filenames. This note fixes the mathematical formulation and integration boundaries while leaving those empirical choices explicit. It does not require the scGPT module to finish before development of the dictionary-learning baseline.
+
+
+\section{Relevant literature and reading priorities}
+\paragraph{Sparse representations.}
+Olshausen and Field~\cite{olshausen1996} give a foundational example of learning sparse representations from natural images. Their work motivates learning reusable components with sparse activities, but it is not evidence that gene-expression atoms necessarily correspond to biological pathways. Tibshirani~\cite{tibshirani1996} supplies the statistical basis for $\ell_1$-penalized estimation and is the first reading for understanding the fixed-dictionary coding problem.
+
+\paragraph{Optimization and implementation.}
+Mairal et al.~\cite{mairal2010} are the most directly relevant algorithmic reference for this module: they develop online matrix factorization and sparse dictionary learning for large datasets. Their convergence results require stated assumptions and should not be transferred automatically to any mini-batch implementation. Beck and Teboulle~\cite{beck2009} explain accelerated proximal optimization for convex composite problems; this supports the sparse-coding subproblem, not a global-optimality claim for jointly learning $Z$ and $D$.
+
+\paragraph{Interpretable single-cell programs.}
+Kotliar et al.~\cite{kotliar2019} use consensus nonnegative matrix factorization to identify expression programs associated with cell identity and activity. This provides a useful biological and stability-oriented comparison for program interpretation. Their nonnegative model differs from our signed, sparsity-penalized formulation; we should borrow interpretation questions, not assume identical factor semantics or recovery guarantees.
+
+\paragraph{Foundation-model comparison.}
+Cui et al.~\cite{cui2024} introduce scGPT and establish the foundation-model context. Our teammate's small custom-pretrained scGPT checkpoints must be described separately from the published model's weights and reported results. DenAdel et al.~\cite{denadel2026}, the reference paper supplied with this project, investigate pretraining size and diversity across single-cell models and tasks. Their results motivate evaluating representation utility against simpler baselines, but do not determine the outcome of our dictionary-learning comparison.
+
+\paragraph{Suggested reading order.}
+Start with Tibshirani for the coding objective and Mairal et al. for the dictionary algorithm. Then read Kotliar et al. for gene-program interpretation, and Cui et al. together with DenAdel et al. for the comparison design. Use Beck and Teboulle when studying solver behavior, and Olshausen and Field for historical context.
+
+\begin{thebibliography}{9}
+\bibitem{tibshirani1996}
+R. Tibshirani.
+Regression shrinkage and selection via the lasso.
+\emph{Journal of the Royal Statistical Society: Series B (Methodological)}, 58(1):267--288, 1996.
+\href{https://doi.org/10.1111/j.2517-6161.1996.tb02080.x}{doi:10.1111/j.2517-6161.1996.tb02080.x}.
+
+\bibitem{olshausen1996}
+B. A. Olshausen and D. J. Field.
+Emergence of simple-cell receptive field properties by learning a sparse code for natural images.
+\emph{Nature}, 381:607--609, 1996.
+\href{https://doi.org/10.1038/381607a0}{doi:10.1038/381607a0}.
+
+\bibitem{mairal2010}
+J. Mairal, F. Bach, J. Ponce, and G. Sapiro.
+Online learning for matrix factorization and sparse coding.
+\emph{Journal of Machine Learning Research}, 11:19--60, 2010.
+\url{https://www.jmlr.org/papers/v11/mairal10a.html}.
+
+\bibitem{beck2009}
+A. Beck and M. Teboulle.
+A fast iterative shrinkage-thresholding algorithm for linear inverse problems.
+\emph{SIAM Journal on Imaging Sciences}, 2(1):183--202, 2009.
+\href{https://doi.org/10.1137/080716542}{doi:10.1137/080716542}.
+
+\bibitem{kotliar2019}
+D. Kotliar et al.
+Identifying gene expression programs of cell-type identity and cellular activity with single-cell RNA-Seq.
+\emph{eLife}, 8:e43803, 2019.
+\href{https://doi.org/10.7554/eLife.43803}{doi:10.7554/eLife.43803}.
+
+\bibitem{cui2024}
+H. Cui et al.
+scGPT: toward building a foundation model for single-cell multi-omics using generative AI.
+\emph{Nature Methods}, 21:1470--1480, 2024.
+\href{https://doi.org/10.1038/s41592-024-02201-0}{doi:10.1038/s41592-024-02201-0}.
+
+\bibitem{denadel2026}
+A. DenAdel et al.
+Evaluating the role of pretraining dataset size and diversity on single-cell foundation model performance.
+\emph{Nature Methods}, 2026.
+\href{https://doi.org/10.1038/s41592-026-03120-y}{doi:10.1038/s41592-026-03120-y}.
+Project copy: \texttt{docs/references/denAdel.pdf}.
+\end{thebibliography}
+
+\end{document}

@@ -292,3 +292,6 @@ __pycache__/
 # Downloaded datasets and local AnnData files
 /data/raw/
 *.h5ad
+
+# Reproducible dictionary-learning demo outputs
+/results/dict-learning/
