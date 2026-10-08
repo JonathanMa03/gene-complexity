@@ -1,0 +1,16 @@
+cell_type,GSM2230757,GSM2230758,GSM2230759,GSM2230760,Total
+acinar,110,3,843,2,958
+activated_stellate,51,81,100,52,284
+alpha,236,676,1130,284,2326
+beta,872,371,787,495,2525
+delta,214,125,161,101,601
+ductal,120,301,376,280,1077
+endothelial,130,23,92,7,252
+epsilon,13,2,2,1,18
+gamma,70,86,36,63,255
+macrophage,14,17,14,10,55
+mast,8,9,7,1,25
+quiescent_stellate,92,22,54,5,173
+schwann,5,6,1,1,13
+t_cell,2,2,2,1,7
+Total,1937,1724,3605,1303,8569
