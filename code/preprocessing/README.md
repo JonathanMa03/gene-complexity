@@ -110,7 +110,33 @@ Run the synthetic metadata checks with:
 python -m unittest discover -s code/preprocessing -p 'test_*.py'
 ```
 
-## Remaining decisions
+## Final shared split (2026-10-12)
 
-- Confirm scGPT handling of unmatched panel genes.
-- Independently verify Ensembl mappings if required.
+The scGPT owner confirmed successful frozen Baron smoke extraction with the
+supplied panel mapping and `--allow-missing-panel`, with no zero-panel cells
+among all 8,569 cells. No additional scGPT cell exclusions were applied.
+This compatibility check does not establish independence from pretraining data.
+
+The final bundle was generated with seed 42 and `--scgpt-confirmed` under
+`data/processed/baron_splits_final/`. It retains 8,506 cells across 10 classes:
+
+| Split | Cells |
+|---|---:|
+| Train | 5,954 |
+| Validation | 1,277 |
+| Test | 1,275 |
+
+The 63 excluded cells belong to T cell, Schwann, epsilon, and mast classes.
+All retained classes occur in every split. Four automated tests passed.
+Donors are shared across splits by design.
+
+For reproducibility, compare regenerated artifacts with these SHA256 hashes:
+
+- Raw H5AD: `452177f01994c2f81ad79cb31b1aaf562b12ff4d56d52299dce1f5ed18c08176`
+- Split manifest CSV: `bb1e6f0810e20d02400892743c49077323d30bb67e57e043387da84115affca5`
+
+Share the final bundle with all model owners; alternatively regenerate it using
+the documented command and verify the manifest hash. Model-specific fitted
+preprocessing remains downstream work. The supplied panel mapping has been
+checked against the data and panel, not independently reannotated against an
+external reference database.
