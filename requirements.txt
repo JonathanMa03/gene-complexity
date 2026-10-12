@@ -4,3 +4,6 @@ pandas
 matplotlib
 notebook
 anndata
+
+# Classical representation learning
+scikit-learn

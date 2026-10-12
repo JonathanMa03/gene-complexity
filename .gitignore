@@ -293,6 +293,9 @@ __pycache__/
 /data/raw/
 *.h5ad
 
+# Reproducible dictionary-learning demo outputs
+/results/dict-learning/
+
 # Baron preprocessing outputs (generated locally)
 /data/processed/
 /data/baron_gene_symbols.csv
