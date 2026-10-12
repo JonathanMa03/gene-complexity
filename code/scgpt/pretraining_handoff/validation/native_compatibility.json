@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/scripts/09_embed_dogma_scgpt.py",
+  "source_sha256": "0e37ef86e627b807bf7869685df2364692daef05f90302bed4784c5cf82dd911",
+  "raw_panel_csr_indices_data_exact": true,
+  "original_dataset_and_model_used": true,
+  "identical_inference_precision": "float32 CPU",
+  "identical_seed": 2026092500,
+  "identical_batch_size": 8,
+  "embedding_max_abs_error": 0.0,
+  "embedding_bitwise_equal": true,
+  "cell_ids_unicode_pickle_free": true
+}

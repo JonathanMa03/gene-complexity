@@ -1,0 +1,11 @@
+{
+  "source": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/outputs/sctab_seed0_n222000_umap.h5ad",
+  "source_cells": 222000,
+  "source_genes": 19331,
+  "panel_genes": 2000,
+  "selection": "top normalized dispersion from Scanpy seurat-flavor HVG statistics",
+  "selection_uses_dogma_expression": false,
+  "normalization_used_to_create_source_statistics": "total-count 1e4; log1p; gene centered only during PCA",
+  "stable_identifier": "Ensembl gene ID without version",
+  "panel_file": "/n/holylabs/rongma_lab/Lab/scaling_law/jingyuan/pretraining_cell_scaling/manifests/pca/sctab_hvg_2000.tsv"
+}

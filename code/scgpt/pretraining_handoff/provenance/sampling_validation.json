@@ -1,0 +1,386 @@
+{
+  "status": "PASS",
+  "maximum_manifests": [
+    {
+      "seed": 0,
+      "rows": 1600000,
+      "unique_ids": true,
+      "original_222k_prefix": true,
+      "original_888k_prefix": true,
+      "columns": [
+        "seed",
+        "sampling_rank",
+        "soma_joinid",
+        "is_primary_data",
+        "dataset_id",
+        "donor_id",
+        "assay",
+        "cell_type",
+        "development_stage",
+        "disease",
+        "tissue",
+        "tissue_general",
+        "sex",
+        "self_reported_ethnicity",
+        "suspension_type"
+      ]
+    },
+    {
+      "seed": 1,
+      "rows": 1600000,
+      "unique_ids": true,
+      "original_222k_prefix": true,
+      "original_888k_prefix": true,
+      "columns": [
+        "seed",
+        "sampling_rank",
+        "soma_joinid",
+        "is_primary_data",
+        "dataset_id",
+        "donor_id",
+        "assay",
+        "cell_type",
+        "development_stage",
+        "disease",
+        "tissue",
+        "tissue_general",
+        "sex",
+        "self_reported_ethnicity",
+        "suspension_type"
+      ]
+    },
+    {
+      "seed": 2,
+      "rows": 1600000,
+      "unique_ids": true,
+      "original_222k_prefix": true,
+      "original_888k_prefix": true,
+      "columns": [
+        "seed",
+        "sampling_rank",
+        "soma_joinid",
+        "is_primary_data",
+        "dataset_id",
+        "donor_id",
+        "assay",
+        "cell_type",
+        "development_stage",
+        "disease",
+        "tissue",
+        "tissue_general",
+        "sex",
+        "self_reported_ethnicity",
+        "suspension_type"
+      ]
+    }
+  ],
+  "actual_input_check": "PASS for all 51 input files",
+  "inputs": [
+    {
+      "model_id": "sctab_seed0_n2220_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 2220,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n4440_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 4440,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n8880_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 8880,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n17760_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 17760,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n35520_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 35520,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n71040_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 71040,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n142080_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 142080,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n222000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n222000_rho0250_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed0_n222000_rho0500_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed0_n222000_rho1000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed0_n222000_rho2000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed0_n222000_rho4000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed0_n222000_rho7000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed0_n444000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 444000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n888000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 888000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed0_n1600000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 1600000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n2220_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 2220,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n4440_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 4440,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n8880_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 8880,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n17760_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 17760,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n35520_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 35520,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n71040_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 71040,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n142080_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 142080,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n222000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n222000_rho0250_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed1_n222000_rho0500_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed1_n222000_rho1000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed1_n222000_rho2000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed1_n222000_rho4000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed1_n222000_rho7000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed1_n444000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 444000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n888000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 888000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed1_n1600000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 1600000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n2220_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 2220,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n4440_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 4440,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n8880_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 8880,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n17760_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 17760,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n35520_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 35520,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n71040_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 71040,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n142080_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 142080,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n222000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n222000_rho0250_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed2_n222000_rho0500_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed2_n222000_rho1000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed2_n222000_rho2000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed2_n222000_rho4000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed2_n222000_rho7000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 222000,
+      "id_source": "obs_names sctab_<soma_joinid>, matching archived depth preprocessing"
+    },
+    {
+      "model_id": "sctab_seed2_n444000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 444000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n888000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 888000,
+      "id_source": "obs.soma_joinid"
+    },
+    {
+      "model_id": "sctab_seed2_n1600000_scgpt",
+      "actual_input_id_order_matches_manifest_prefix": true,
+      "requested_cells": 1600000,
+      "id_source": "obs.soma_joinid"
+    }
+  ]
+}

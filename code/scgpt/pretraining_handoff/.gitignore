@@ -1,0 +1,8 @@
+artifacts/
+outputs/
+.venv/
+__pycache__/
+*.pt
+*.h5ad
+*.npz
+*.tar.gz

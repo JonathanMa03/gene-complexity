@@ -1,0 +1,35 @@
+{
+  "source": {
+    "census_version": "2023-05-15",
+    "ontology_url": "https://github.com/obophenotype/cell-ontology/releases/download/v2023-05-22/cl-simple.obo",
+    "eligible_cells": 22190622,
+    "eligible_cell_types": 164,
+    "eligible_donors": 4314,
+    "eligible_tissues_general": 56,
+    "protocols": [
+      "10x 5' v2",
+      "10x 3' v3",
+      "10x 3' v2",
+      "10x 5' v1",
+      "10x 3' v1",
+      "10x 3' transcription profiling",
+      "10x 5' transcription profiling"
+    ],
+    "expected_eligible_cells": 22190622,
+    "paper_reported_cells": 22189056,
+    "upstream_notebook_minus_paper_cells": 1566,
+    "duplicate_erratum_correction_applied": false,
+    "python": "3.10.13 | packaged by conda-forge | (main, Oct 26 2023, 18:07:37) [GCC 12.3.0]",
+    "platform": "Linux-4.18.0-553.155.1.el8_10.x86_64-x86_64-with-glibc2.28",
+    "cellxgene_census": "1.17.0"
+  },
+  "sampling_seed": 0,
+  "extension_rng_seed": 202609290,
+  "original_manifest_sha256": "7703025a70543b9a9914a2531776d18c8792f8c45179718442bb08cf2c4cffc6",
+  "manifest_sha256": "06b85db14556fef007c4f247e022ba89152139c8d6f9879fef27154386520ece",
+  "sizes": [
+    1600000
+  ],
+  "original_prefix_cells": 888000,
+  "model_seed": 20260821
+}
