@@ -98,6 +98,16 @@ Select the **Python (gene-complexity)** kernel and run all cells. The notebook c
 
 Additional dependencies for the project pipelines will be documented as they are implemented.
 
+### Server scGPT pretraining handoff
+
+The [small scGPT pretraining handoff](code/scgpt/pretraining_handoff/README.md)
+documents 51 completed server checkpoints, their fixed gene panel/vocabulary,
+sampling provenance, dependency versions, and frozen 128-dimensional embedding
+extraction. Its dependencies are isolated from the project environment. Large
+weights and sampling tables remain outside Git, with locations and checksum-verified
+retrieval instructions in the handoff. These are controlled small scGPT models,
+not the original large published scGPT checkpoint.
+
 ## Team Workflow: Branches and Pull Requests
 
 1. Start from an up-to-date `main` branch with no uncommitted changes:

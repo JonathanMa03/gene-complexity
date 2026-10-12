@@ -1,0 +1,13 @@
+# Python 3.10.13; tested server versions. Vendored scGPT core, no scGPT pip package.
+# CPU or CUDA PyTorch build selected by platform; live server used 2.11.0+cu128.
+torch==2.11.0
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.15.3
+anndata==0.11.4
+scanpy==1.11.5
+pyarrow==24.0.0
+scikit-learn==1.7.2
+numba==0.66.0
+tqdm==4.68.3
+typing-extensions==4.15.0
