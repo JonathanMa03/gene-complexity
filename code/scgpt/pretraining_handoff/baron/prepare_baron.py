@@ -74,7 +74,7 @@ def main():
     data.var[column] = ids
     args.output_dir.mkdir(parents=True, exist_ok=False)
     with (args.output_dir/'zero_panel_cell_ids.csv').open('w', newline='') as stream:
-        writer = csv.writer(stream)
+        writer = csv.writer(stream, lineterminator="\n")
         writer.writerow(['cell_id'])
         writer.writerows([[cell] for cell in zero_ids])
     mapping.loc[~present].to_csv(args.output_dir/'missing_panel_genes.csv', index=False)
