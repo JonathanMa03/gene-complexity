@@ -21,7 +21,7 @@ assert genes["gene_symbol"].is_unique
 assert cells["cell_id"].is_unique
 assert np.isfinite(X.data).all()
 assert (X.data >= 0).all()
-assert np.allclose(X.data, np.round(X.data), atol=1e-6)
+assert np.allclose(X.data, np.round(X.data), atol=1e-6, rtol=0)
 
 # Preserve integer counts
 X.data = np.rint(X.data).astype(np.int32)
