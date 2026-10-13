@@ -30,6 +30,7 @@ def main():
     if a.limit is not None and a.limit < 1:
         p.error('--limit must be positive')
     torch.set_num_threads(a.threads)
+    input_digest = sha256(a.input)
     backed = ad.read_h5ad(a.input, backed='r')
     try:
         data = backed[:a.limit].to_memory() if a.limit else backed.to_memory()
@@ -42,6 +43,8 @@ def main():
                                    a.allow_missing_panel, a.strip_gene_versions)
     model, vocab, config = load_model(a.checkpoint_dir, a.device)
     vectors = embed_counts(matrix, panel, model, vocab, config, a.batch_size, a.device, a.seed)
+    if sha256(a.input) != input_digest:
+        raise ValueError('Input changed during extraction')
     a.output.parent.mkdir(parents=True, exist_ok=True)
     with a.output.open('wb') as f:
         np.savez_compressed(f, vectors=vectors, cell_ids=np.asarray(data.obs_names, dtype=str))
@@ -54,11 +57,14 @@ def main():
         parameters=sum(p.numel() for p in model.parameters()), trainable_parameters=0,
         model_id=config['model_id'], checkpoint_sha256=config['checkpoint_sha256'],
         config_sha256=sha256(a.checkpoint_dir/'config.json'), panel_sha256=sha256(a.panel),
-        input_path=str(a.input), input_cells_total=backed.n_obs, limit=a.limit,
+        input_path=str(a.input), input_sha256=input_digest, input_cells_total=backed.n_obs, limit=a.limit,
         output_sha256=sha256(a.output), seed=a.seed, batch_size=a.batch_size,
         device=a.device, precision='float32', normalization='CLS L2', coverage=coverage,
+        threads=a.threads, torch_version=str(torch.__version__),
+        numpy_version=np.__version__, extractor_sha256=sha256(Path(__file__)),
+        model_utils_sha256=sha256(HERE/'model_utils.py'),
         note='Matches native cell-to-text extraction; historical DOGMA extraction used BF16. '
-             'No cross-device bitwise-equivalence claim. Full input hash not computed for a limited smoke run.')
+             'No cross-device bitwise-equivalence claim. Full input SHA256 verified before and after extraction.')
     a.output.with_suffix('.json').write_text(json.dumps(report, indent=2)+'\n')
     print(json.dumps(report, indent=2))
 
