@@ -1,5 +1,10 @@
 # Added
 
+- SZ 2026-10-13: Deliver frozen Baron features for all 8,569 cells using the
+  prespecified 1.6M-cell seed0 scGPT checkpoint. Add full-input SHA256 checks,
+  ID/shape validation, checkpoint rationale, metadata, Drive links and commands.
+  Verified finite 8569 x 128 vectors; no cells excluded or model weights changed.
+
 - SZ 2026-10-12: Add Baron/scGPT Ensembl mapping preparation and validation.
   Verified 1,879/2,000 panel genes, zero empty-panel cells across all 8,569 cells,
   and finite 8 x 128 CPU embeddings with preserved cell IDs. Original input

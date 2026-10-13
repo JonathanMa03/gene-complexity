@@ -1,0 +1,31 @@
+{
+  "drive_folder_url": "https://drive.google.com/drive/folders/1Llp26DZmhvBfMjf0Q-JVy_RR1oe9LIhI",
+  "files": [
+    {
+      "name": "baron_scgpt_full.npz",
+      "bytes": 4102212,
+      "sha256": "08ee0912bc6f43f3ecc79aed1f4bdc4683587f47e3e47547be282aa5927f47a6",
+      "drive_url": "https://drive.google.com/file/d/1r4dli7PXdiy45aoTsIPKUbpmwR28Km_N/view?usp=drivesdk"
+    },
+    {
+      "name": "baron_scgpt_full.metadata.json",
+      "bytes": 3756,
+      "sha256": "81c5d9386f6be0a2ce8ef998bb5190adc47711f1d59d15886dd5e0ff69aa14dc",
+      "drive_url": "https://drive.google.com/file/d/12V-gmE7mP6gtprntLxVhfK29wy1qyHu-/view?usp=drivesdk"
+    },
+    {
+      "name": "checkpoint_selection.json",
+      "bytes": 1059,
+      "sha256": "7a364732367c882c70f007e61d2f6473878ce9138ea1eb654c88ac23c8f3873e",
+      "drive_url": "https://drive.google.com/file/d/16V2A0-33r-cqTXnew0rMqZCz6SIX7xsm/view?usp=drivesdk"
+    },
+    {
+      "name": "preparation_report.json",
+      "bytes": 1913,
+      "sha256": "28f73acfcf56a281d0de95adc085a14e2d151dad901e68caedd21bc2fec7a737",
+      "drive_url": "https://drive.google.com/file/d/11BDcCFPglgmEwH_hxRfC4Z9-cqhQ4omE/view?usp=drivesdk"
+    }
+  ],
+  "access": "Inherited anyone-with-link permission from the existing shared handoff folder; verified via Drive metadata.",
+  "verification": "Uploaded file sizes match local sizes. SHA256 values are local artifact digests; independently hash your downloaded files before use."
+}
