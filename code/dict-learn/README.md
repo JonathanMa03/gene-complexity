@@ -31,3 +31,7 @@ Load arrays with `np.load(path, allow_pickle=False)`. The run checks atom norms,
 Existing output directories are preserved. Use `--output results/dict-learning/another_run` for another run and `--seed 7` to vary the synthetic data and learner initialization. Generated outputs are ignored by Git; the generator is tracked.
 
 `fit_dictionary(X_train, ...)` is the minimal reusable entry point for already-processed dense features. Real-data ingestion, sparse/memory-efficient processing, hyperparameter search, labels, classifiers, and biological interpretation remain future work. Real-data callers must enforce the shared cell/gene ID and split contract described in the [preprocessing handoff](../../docs/notes/preprocessing_handoff.md).
+
+## Real Baron pilot
+
+Open [baron_pilot.ipynb](baron_pilot.ipynb) and Run All, or run `python code/pipeline/dictionary_pilot.py` from the repository root. See [pipeline instructions](../pipeline/README.md) for the prepared-feature requirement and artifacts. This pilot uses only train/validation and does not access final test features.
