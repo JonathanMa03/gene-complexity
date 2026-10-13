@@ -57,3 +57,33 @@ It verifies feature hashes, labels, donors, cell/gene ordering, and training pro
 Default output is `results/dict-learning/baron_pilot_v2/`, ignored by Git. Existing outputs are preserved; use `--output` for another run. Options include `--atoms`, `--alpha`, `--epochs`, and `--seed`. Warnings and epoch-budget exhaustion are reported rather than silently treated as convergence. The script verifies encoding from the saved dictionary on eight validation rows. No classifier, scGPT comparison, automatic tuning, or final test evaluation is performed. Reconstruction improvements alone do not establish classification utility.
 
 The solver runs in float64 to avoid float32 coordinate-descent precision warnings; no new scaling is fitted. The earlier local `baron_pilot_v1/` run had numerical warnings and is superseded by `baron_pilot_float64/`. The corrected pilot had zero warnings, validation relative reconstruction MSE about 0.802, and about 72% active coefficients. This modest pilot is not yet particularly sparse and is not a tuned final model.
+
+## Configurable dictionary candidate grid
+
+```bash
+python code/pipeline/dictionary_grid.py
+```
+
+The starter config is `configs/dictionary_grid_v1.json`: atoms `[16, 32]`, penalties `[1.0, 5.0]`, seed `[42]`, and at most 10 epochs. This is a small provisional grid, not a final search budget. Each candidate fits on all training cells and exports training/validation codes through the same checked pilot implementation. Test features are never opened.
+
+Outputs are under `results/dict-learning/baron_grid_v1/`. Each candidate has its own dictionary, codes, and report; `grid_summary.csv` aggregates reconstruction, sparsity, and warnings and gives artifact directories for the classifier teammate. `grid_config.json` and `grid_report.json` record settings and provenance. No best model is automatically selected.
+
+Rerunning verifies and skips completed matching candidates. Source features, model script, library versions, parameters, and output hashes must match; incomplete or changed artifacts are rejected. Preserve failed run directories for diagnosis and use a new output root. The grid config cannot change within an existing root.
+
+**After the classifier teammate supplies initial logistic train/validation results, review them together and revise the candidate grid as needed.** Create `dictionary_grid_v2.json` and a new output root rather than editing historical runs:
+
+```bash
+python code/pipeline/dictionary_grid.py \
+  --config code/pipeline/configs/dictionary_grid_v2.json \
+  --output results/dict-learning/baron_grid_v2
+```
+
+Create that v2 config first; it is not supplied yet. Choose a modest agreed search budget using validation classification results, sparsity, and program interpretation. More validation searches can overfit validation, so document revisions. Do not select from reconstruction alone or use test performance to revise the grid. After choosing settings, freeze the pipeline before final test encoding/evaluation.
+
+### The three classifier inputs
+
+1. **Processed-expression baseline:** `baron_classical_v1/train.npz` and `validation.npz`, field `X`. Already available; it does not need dictionary fitting or its own dictionary grid.
+2. **Dictionary representation:** each candidate's `train_codes.npz` and `validation_codes.npz`, field `vectors`.
+3. **scGPT representation:** the full embedding NPZ, field `vectors`, joined by cell ID to the same shared manifest and filtered to its retained cohort.
+
+Each representation feeds a separately fitted logistic classifier under the same agreed classifier tuning procedure. These are alternative feature sets, not concatenated features. Additional code/embedding scaling, if chosen, must be training-fitted. The classifier owner supplies validation classification metrics and uses the same class/probability mapping across comparisons.

@@ -167,3 +167,25 @@ Once the classifier teammate branches from integrated `main`:
 scGPT uses its separate environment and raw-count/panel preparation described in [the Baron handoff](../../code/scgpt/pretraining_handoff/baron/README.md). Primary checkpoint choice and pretraining-overlap limitations must be documented before interpreting the final comparison.
 
 Track code, documentation, and tests in Git. Share generated data/feature bundles separately, or reproduce them with the recorded versions and hashes. Do not commit raw datasets, model weights, or local virtual environments.
+
+## 8. Dictionary grid and follow-up after logistic validation
+
+Run `python code/pipeline/dictionary_grid.py` for the provisional grid in
+`code/pipeline/configs/dictionary_grid_v1.json`. It fits 16/32 atoms with penalties
+1.0/5.0, seed 42, and a 10-epoch ceiling on training cells only. It exports each
+candidate's training/validation codes and diagnostics under
+`results/dict-learning/baron_grid_v1/`, with a `grid_summary.csv` index. It does
+not select a final dictionary or open the test features.
+
+**When the classifier teammate returns initial logistic validation results,
+revisit the grid together and change/add candidates in a new versioned config
+and output directory as needed.** Record the revision rationale and keep a
+modest search budget. Compare validation classification, sparsity, and
+interpretability; reconstruction alone is not the selection criterion. Keep
+final test evaluation out of this loop.
+
+The third method requires no additional representation learner: the
+processed-expression baseline uses the existing classical `X` matrices directly.
+The dictionary and scGPT methods use their code/embedding matrices. Fit separate
+logistic models, align all three by cell ID, and use the same manifest and
+classifier tuning procedure. Do not concatenate the representations by default.
