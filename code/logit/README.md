@@ -1,86 +1,148 @@
-# Logistic Regression Downstream Classification
+# Logistic Regression Downstream Classification — Baron Dataset
 
-## 1. Overview
+## Overview
 
-This module compares six feature representations for downstream cell-type classification on the Baron dataset:
+This module evaluates how well different feature representations support downstream **cell-type classification** on the Baron single-cell dataset. It compares an expression baseline, four dictionary-learning representations, and scGPT embeddings using the same logistic-regression training, validation, and hyperparameter-selection procedure.
 
-- Expression features (2,000 dimensions)
-- Dictionary Learning K16, alpha=1
-- Dictionary Learning K16, alpha=5
-- Dictionary Learning K32, alpha=1
-- Dictionary Learning K32, alpha=5
-- scGPT embeddings (128 dimensions)
+The main experiment is implemented in **`run_all_validation_coarse_to_fine.py`**. The other Python files are supporting baseline and data-inspection utilities.
 
-All representations are evaluated using Logistic Regression with the same training and validation splits.
+## Scripts
 
-## 2. Data Preparation
+| File | Purpose |
+| --- | --- |
+| `run_all_validation_coarse_to_fine.py` | **Main entry point.** Align all six representations, run two-stage C tuning, and save validation metrics. |
+| `expression_baseline.py` | Standalone expression-feature logistic-regression baseline. |
+| `dictionary_baseline.py` | Standalone dictionary-code logistic-regression baseline. |
+| `scgpt_baseline.py` | Standalone scGPT-embedding logistic-regression baseline. |
+| `inspect_data.py` | Inspect the expression/dictionary input files and their structure. |
+| `inspect_scgpt.py` | Inspect scGPT embedding files and cell IDs. |
 
-Features are aligned by cell ID to ensure consistent sample ordering and labels across representations.
+The supporting scripts were used during development and troubleshooting; use the **main entry point** for the reported six-representation comparison. Earlier intermediate comparison scripts are not required to reproduce these results.
 
-The scGPT embeddings are loaded from `baron_scgpt_full.npz`, using the `vectors` and `cell_ids` fields. Only cells included in the reference train/validation splits are used.
+## Feature Representations
 
-No additional feature scaling is applied in the downstream classifier.
+| Representation | Number of features | Feature used in classification | NPZ key |
+| --- | ---: | --- | --- |
+| Expression | 2,000 | Gene expression matrix $X$ | `X` |
+| Dictionary K16, alpha=1 | 16 | Dictionary codes $Z$ | `vectors` |
+| Dictionary K16, alpha=5 | 16 | Dictionary codes $Z$ | `vectors` |
+| Dictionary K32, alpha=1 | 32 | Dictionary codes $Z$ | `vectors` |
+| Dictionary K32, alpha=5 | 32 | Dictionary codes $Z$ | `vectors` |
+| scGPT | 128 | scGPT cell embeddings | `vectors` |
 
-## 3. Hyperparameter Tuning
+For dictionary learning, the expression matrix is approximated as $X \approx ZD$, where $Z$ contains **cell-level dictionary codes** and $D$ contains the learned dictionary (gene programs). The downstream classifier uses **$Z$, not $D$**. In the supplied `train_codes.npz` and `validation_codes.npz` files, these codes are stored under the NPZ key `vectors`. This key is a storage-field name, not the mathematical name of the matrix. scGPT also uses a `vectors` key, but its contents are scGPT embeddings rather than dictionary codes.
 
-A two-stage coarse-to-fine grid search is used to select the regularization parameter C independently for each feature representation.
+## Required Inputs and Paths
 
-**Stage 1: Coarse Search**
+Paths are resolved relative to the repository root in the main script.
 
-Candidate values: 0.01, 0.1, 1, 10, 100, 1000.
+**Expression features** — `data/processed/baron_classical_v1/`
+- `train.npz`: `X`, `cell_ids`, `labels`
+- `validation.npz`: `X`, `cell_ids`, `labels`
 
-**Stage 2: Fine Search**
+**Dictionary features** — `results/dict-learning/baron_grid_v1/`
+- `k16_a1.0_s42_e10/`
+- `k16_a5.0_s42_e10/`
+- `k32_a1.0_s42_e10/`
+- `k32_a5.0_s42_e10/`
 
-The search is refined around each representation's best coarse C, using 21 logarithmically spaced candidates between C/10 and 10C, excluding previously evaluated values.
+Each dictionary run needs `train_codes.npz` and `validation_codes.npz`, with `vectors` (the cell-level codes $Z$) and `cell_ids` fields.
 
-A total of 144 Logistic Regression fits are performed across six representations.
+**scGPT embeddings** — `code/scgpt/pretraining_handoff/outputs/baron/baron_scgpt_full.npz`
+- Required fields: `vectors`, `cell_ids`.
 
-The best C is selected by maximizing validation Macro-F1.
+**Finalized split manifest** — A CSV with `cell_id` and `split` columns. The script checks common paths such as `data/processed/baron_classical_v1/split_manifest.csv` and `data/processed/baron_split_manifest.csv`. If the correct finalized manifest is elsewhere or multiple candidates exist, update `find_final_manifest()` to select the correct file explicitly.
 
-## 4. Validation Results
+Input feature bundles are obtained from the team handoff; this script does not generate dictionary codes or scGPT embeddings.
 
-| Representation | Best C | Macro-F1 |
-|---|---:|---:|
-| Expression | 0.316228 | 0.984365 |
-| Dictionary K32 alpha1 | 0.063096 | 0.982813 |
-| scGPT | 630.957344 | 0.964146 |
-| Dictionary K16 alpha1 | 5.011872 | 0.954980 |
-| Dictionary K16 alpha5 | 0.316228 | 0.900204 |
-| Dictionary K32 alpha5 | 158.489319 | 0.878918 |
+## Data Alignment and Preprocessing
 
-The Dictionary K32 alpha1 representation achieves performance close to the expression baseline while using substantially fewer features.
+1. Load the expression training and validation files as the reference splits and labels.
+2. Verify that their cell-ID membership agrees with the finalized split manifest.
+3. Reorder each dictionary-code matrix $Z$ (saved as `vectors`) by `cell_ids` to match the reference train/validation row order.
+4. Read scGPT `vectors` and `cell_ids` from the full embedding file, exclude cells not in the finalized manifest, and align the remaining rows to the reference splits. The expected number of excluded cells in this handoff is **63**; the script prints the actual number and warns if it differs.
+5. Check feature dimensions, duplicate IDs, missing reference cells, and non-finite feature values.
 
-These are validation results, not independent test results.
+The reference data in the current run contain **5,954 training cells** and **1,277 validation cells**.
 
-## 5. How to Run
+**No additional `StandardScaler` or other downstream feature scaling is applied.** The experiment uses the upstream feature representations as provided. Their upstream preprocessing may differ, so comparisons reflect both the learned representation and its preprocessing.
 
-Prepare the required expression, dictionary, scGPT, and finalized manifest files in their expected project locations.
+## Classifier and Hyperparameter Tuning
 
-From the project root, run:
+All six representations use scikit-learn `LogisticRegression` with:
+
+- Solver: `lbfgs`
+- Default L2 regularization
+- `max_iter=5000`
+- `random_state=42`
+- Hyperparameter: `C` (inverse regularization strength)
+- Selection metric: **validation Macro-F1**
+- Tie-breaking rule: prefer the smaller `C` when scores are equal
+
+The procedure is a **two-stage, validation-based grid search**, run independently for each representation:
+
+**Stage 1 — Coarse search**
+
+Test `C = [0.01, 0.1, 1, 10, 100, 1000]` and select the converged model with the highest validation Macro-F1.
+
+**Stage 2 — Fine search**
+
+Generate 21 log-spaced candidates between `coarse_best_C / 10` and `coarse_best_C * 10`, skipping values already tested in Stage 1. With the current grid, this adds 18 new fits per representation.
+
+Finally, select the highest-scoring **converged** candidate across both stages. Each candidate is fit on the training split and scored on the validation split.
+
+**Total: 36 coarse fits + 108 fine fits = 144 fits.** This is *not* K-fold cross-validation. No new data splits are generated, and the test set is not loaded or used.
+
+## Run Instructions
+
+Install the Python dependencies in your project environment:
+
+```bash
+python -m pip install numpy pandas scikit-learn
+```
+
+Place the required NPZ files and finalized manifest in the locations described above. From the repository root, run:
 
 ```bash
 python code/logit/run_all_validation_coarse_to_fine.py
 ```
 
-Generated outputs are saved under `results/logit/`:
+The script resolves input paths relative to its own location, prints the coarse and fine results, and saves CSV files to `results/logit/`.
 
-- `validation_coarse_runs.csv`
-- `validation_fine_runs.csv`
-- `validation_all_runs.csv`
-- `validation_best_C.csv`
+## Validation Results
 
-Generated outputs are excluded from Git.
+Results from the completed two-stage search (Macro-F1 is the tuning criterion):
 
-## 6. Current Status
+| Feature set | Best C | Accuracy | Macro-F1 | Balanced accuracy | Log loss |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Expression | 0.316228 | 0.990603 | **0.984365** | 0.984698 | 0.034559 |
+| Dictionary K32, alpha=1 | 0.063096 | 0.989037 | 0.982813 | 0.981463 | 0.037899 |
+| scGPT | 630.957344 | 0.972592 | 0.964146 | 0.961069 | 0.087737 |
+| Dictionary K16, alpha=1 | 5.011872 | 0.979640 | 0.954980 | 0.955633 | 0.086279 |
+| Dictionary K16, alpha=5 | 0.316228 | 0.950666 | 0.900204 | 0.888690 | 0.154693 |
+| Dictionary K32, alpha=5 | 158.489319 | 0.949099 | 0.878918 | 0.874847 | 0.226668 |
 
-Completed:
-- Training/validation feature alignment
-- Logistic Regression classification
-- Coarse-to-fine hyperparameter tuning
-- Overall validation performance comparison
+Expression has the highest validation Macro-F1. Dictionary K32, alpha=1 is close (0.982813 vs. 0.984365) while using 32 rather than 2,000 features. This is promising for low-dimensional prediction, but does not by itself establish statistical equivalence or biological interpretability.
 
-Pending:
-- Per-class F1 analysis
-- Confusion matrix analysis
+These scores were used for hyperparameter selection and should **not** be presented as independent test performance.
 
-The test set has not been used. Final test evaluation will be performed after the experimental procedure is finalized.
+## Generated Outputs
+
+The main script creates these files under `results/logit/`:
+
+| Output | Contents |
+| --- | --- |
+| `validation_coarse_runs.csv` | Metrics for all coarse-grid candidates. |
+| `validation_fine_runs.csv` | Metrics for all new fine-grid candidates. |
+| `validation_all_runs.csv` | Both stages combined, including `C`, performance metrics, and convergence status. |
+| `validation_best_C.csv` | Selected `C` and validation metrics for each of the six representations. |
+
+Generated CSVs are **local outputs and are excluded from Git** using `.gitignore`. They can be reproduced by running the main script with the same inputs and environment.
+
+## Current Status and Limitations
+
+**Completed:** input loading and alignment, six-feature-set logistic-regression comparison, two-stage C tuning, validation metrics, and CSV reporting.
+
+**Remaining:** per-class Precision/Recall/F1 analysis and confusion matrices; these are not produced by the current main script.
+
+**Evaluation boundary:** the same validation set is used to choose `C` and report the resulting validation scores, so selection may introduce optimistic bias. The test set is intentionally untouched; final test evaluation should occur only after the team agrees on and freezes the model-selection procedure.
