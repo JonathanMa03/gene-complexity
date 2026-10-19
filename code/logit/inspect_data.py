@@ -2,16 +2,13 @@
 from pathlib import Path
 import numpy as np
 
-# 1. Find the project root
 ROOT = Path(__file__).resolve().parents[2]
 
-# 2. Input folders
 expression_dir = ROOT / "data/processed/baron_classical_v1"
 dictionary_dir = (
     ROOT / "results/dict-learning/baron_grid_v1/"
     "k16_a1.0_s42_e10"
 )
-
 
 def load_features(path, feature_key):
     with np.load(path, allow_pickle=False) as data:
@@ -32,8 +29,7 @@ def load_features(path, feature_key):
 
     return X, cell_ids, labels
 
-
-# 3. Load train and validation data
+# Load train and validation data
 for split in ["train", "validation"]:
     print(f"\n========== {split.upper()} ==========")
 
@@ -45,7 +41,7 @@ for split in ["train", "validation"]:
         dictionary_dir / f"{split}_codes.npz", "vectors"
     )
 
-    # 4. Verify sample identities
+
     assert set(ids_expr) == set(ids_dict), (
         "Expression and Dictionary cell IDs do not match."
     )

@@ -1,23 +1,24 @@
-# Logistic Regression Downstream Classification — Baron Dataset
+# Logistic Regression Downstream Classification
 
 ## Overview
 
 This module evaluates how well different feature representations support downstream **cell-type classification** on the Baron single-cell dataset. It compares an expression baseline, four dictionary-learning representations, and scGPT embeddings using the same logistic-regression training, validation, and hyperparameter-selection procedure.
 
-The main experiment is implemented in **`run_all_validation_coarse_to_fine.py`**. The other Python files are supporting baseline and data-inspection utilities.
+The main experiment is implemented in **`run_all_validation_coarse_to_fine.py`**. The follow-up validation analysis is implemented in **`analyze_validation.py`**. The other Python files are supporting baseline and data-inspection utilities.
 
 ## Scripts
 
 | File | Purpose |
 | --- | --- |
-| `run_all_validation_coarse_to_fine.py` | **Main entry point.** Align all six representations, run two-stage C tuning, and save validation metrics. |
+| `run_all_validation_coarse_to_fine.py` | **Main experiment.** Align all six representations, run two-stage C tuning, and save validation metrics. |
+| `analyze_validation.py` | **Follow-up analysis.** Use selected C values to calculate per-class metrics and generate validation confusion matrices. |
 | `expression_baseline.py` | Standalone expression-feature logistic-regression baseline. |
 | `dictionary_baseline.py` | Standalone dictionary-code logistic-regression baseline. |
 | `scgpt_baseline.py` | Standalone scGPT-embedding logistic-regression baseline. |
 | `inspect_data.py` | Inspect the expression/dictionary input files and their structure. |
 | `inspect_scgpt.py` | Inspect scGPT embedding files and cell IDs. |
 
-The supporting scripts were used during development and troubleshooting; use the **main entry point** for the reported six-representation comparison. Earlier intermediate comparison scripts are not required to reproduce these results.
+The supporting baseline and inspection scripts were used during development and troubleshooting. Run the **main experiment first**, then run `analyze_validation.py` for the follow-up per-class evaluation. Earlier intermediate comparison scripts are not required to reproduce these results.
 
 ## Feature Representations
 
@@ -98,7 +99,7 @@ Finally, select the highest-scoring **converged** candidate across both stages. 
 Install the Python dependencies in your project environment:
 
 ```bash
-python -m pip install numpy pandas scikit-learn
+python -m pip install numpy pandas scikit-learn matplotlib
 ```
 
 Place the required NPZ files and finalized manifest in the locations described above. From the repository root, run:
@@ -107,7 +108,30 @@ Place the required NPZ files and finalized manifest in the locations described a
 python code/logit/run_all_validation_coarse_to_fine.py
 ```
 
-The script resolves input paths relative to its own location, prints the coarse and fine results, and saves CSV files to `results/logit/`.
+The main script resolves input paths relative to its own location, prints the coarse and fine results, and saves CSV files to `results/logit/`.
+
+After the main experiment has generated `results/logit/validation_best_C.csv`, run the follow-up analysis:
+
+```bash
+python code/logit/analyze_validation.py
+```
+
+This script loads the same train/validation representations and reads each feature set's selected `C` from `validation_best_C.csv`. It fits one logistic-regression model per feature set with the same settings, calculates per-class metrics, and creates confusion matrices. **It does not repeat the C search or load the test set.**
+
+## Environment and Reproducibility
+
+The experiments were run using the project's Python
+virtual environment (`.venv`).
+
+| Package | Version |
+|---|---|
+| Python | 3.13.5 |
+| NumPy | 2.5.4 |
+| pandas | 3.0.6 |
+| scikit-learn | 1.9.1 |
+| SciPy | 1.18.1 |
+| Matplotlib | 3.11.2 |
+
 
 ## Validation Results
 
@@ -137,12 +161,14 @@ The main script creates these files under `results/logit/`:
 | `validation_all_runs.csv` | Both stages combined, including `C`, performance metrics, and convergence status. |
 | `validation_best_C.csv` | Selected `C` and validation metrics for each of the six representations. |
 
-Generated CSVs are **local outputs and are excluded from Git** using `.gitignore`. They can be reproduced by running the main script with the same inputs and environment.
+The follow-up script writes the following files under `results/logit/validation_analysis/`:
 
-## Current Status and Limitations
+| Output | Contents |
+| --- | --- |
+| `validation_per_class_metrics.csv` | Per-class Precision, Recall, F1-score, and Support for all six feature representations. |
+| `confusion_matrices/confusion_matrix_<feature_set>.csv` | One confusion matrix with true classes as rows and predicted classes as columns for each representation. |
+| `confusion_matrices/confusion_matrix_<feature_set>.png` | A visualization of each confusion matrix. |
 
-**Completed:** input loading and alignment, six-feature-set logistic-regression comparison, two-stage C tuning, validation metrics, and CSV reporting.
+The analysis also prints the validation Macro-F1 and compares it with the corresponding result in `validation_best_C.csv`. Six confusion matrix CSVs and six PNGs are produced.
 
-**Remaining:** per-class Precision/Recall/F1 analysis and confusion matrices; these are not produced by the current main script.
-
-**Evaluation boundary:** the same validation set is used to choose `C` and report the resulting validation scores, so selection may introduce optimistic bias. The test set is intentionally untouched; final test evaluation should occur only after the team agrees on and freezes the model-selection procedure.
+Generated outputs are **local files and are excluded from Git** using `.gitignore`. They can be reproduced with the same input features, split manifest, packages, and environment.
