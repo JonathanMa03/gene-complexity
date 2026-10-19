@@ -1,3 +1,5 @@
+import warnings
+from sklearn.exceptions import ConvergenceWarning
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -28,49 +30,19 @@ RESULTS_DIR = ROOT / "results/logit"
 OUTPUT_DIR = RESULTS_DIR / "validation_analysis"
 CM_DIR = OUTPUT_DIR / "confusion_matrices"
 
-def main():
-    # Load training and validation features
-    manifest = pd.read_csv(find_final_manifest(), dtype={"cell_id": str})
-    # Expression
-    exp_train, train_ids, y_train = load_npz(EXPRESSION_DIR / "train.npz", "X")
-    exp_val, val_ids, y_val = load_npz(EXPRESSION_DIR / "validation.npz", "X")
-
-    if y_train is None or y_val is None:
-        raise ValueError("Expression labels are missing.")
-    if not set(np.unique(y_val)).issubset(set(np.unique(y_train))):
-        raise ValueError("Validation has unseen labels.")
-
-    manifest = check_reference_splits(manifest, train_ids, val_ids)
-    datasets = [("Expression", exp_train, exp_val)]
-
-    # Dictionary Learning
-    for name, folder_name in DICTIONARY_RUNS.items():
-        folder = DICTIONARY_DIR / folder_name
-        X_train, ids_train, _ = load_npz(folder / "train_codes.npz", "vectors")
-        X_val, ids_val, _ = load_npz(folder / "validation_codes.npz", "vectors")
-
-        if set(ids_train) & set(ids_val):
-            raise ValueError(f"{name}: overlapping splits")
-
-        X_train = align_rows(X_train, ids_train, train_ids, name)
-        X_val = align_rows(X_val, ids_val, val_ids, name)
-        datasets.append((name, X_train, X_val))
-
-    # scGPT
-    sc_vectors, sc_ids, _ = load_npz(SCGPT_PATH, "vectors")
-    keep = np.isin(sc_ids, list(manifest["cell_id"]))
-    print("Excluded scGPT cells:", int((~keep).sum()))
-
-    sc_vectors = sc_vectors[keep]
-    sc_ids = sc_ids[keep]
-    sc_train = align_rows(sc_vectors, sc_ids, train_ids, "scGPT train")
-    sc_val = align_rows(sc_vectors, sc_ids, val_ids, "scGPT validation")
-    datasets.append(("scGPT", sc_train, sc_val))
+def main(bundle=None, results_dir=None):
+    from validation_inputs import load_inputs, default_config
+    bundle = load_inputs(default_config()) if bundle is None else bundle
+    datasets, y_train, y_val = bundle["datasets"], bundle["y_train"], bundle["y_val"]
+    results_dir = Path(results_dir) if results_dir is not None else RESULTS_DIR
+    output_dir = results_dir / "validation_analysis"
+    cm_dir = output_dir / "confusion_matrices"
+    output_dir.mkdir(parents=True, exist_ok=False)
 
     # Read the previously selected best C values
-    best_results = pd.read_csv(RESULTS_DIR / "validation_best_C.csv")
+    best_results = pd.read_csv(results_dir / "validation_best_C.csv")
     best_results = best_results.set_index("feature_set")
-    CM_DIR.mkdir(parents=True, exist_ok=True)
+    cm_dir.mkdir(parents=True, exist_ok=True)
     all_metrics = []
 
     # Analyze each feature set
@@ -81,10 +53,16 @@ def main():
         model = LogisticRegression(
             C=best_C, solver="lbfgs", max_iter=5000, random_state=42
         )
-        model.fit(X_train, y_train)
+        with warnings.catch_warnings():
+            warnings.simplefilter("error", ConvergenceWarning)
+            model.fit(X_train, y_train)
         # Predict validation labels
         y_pred = model.predict(X_val)
         cell_types = model.classes_
+
+        previous_f1 = float(best_results.loc[name, "val_macro_f1"])
+        if not np.isclose(f1_score(y_val, y_pred, average="macro"), previous_f1, atol=1e-8, rtol=0):
+            raise ValueError(f"{name}: analysis does not reproduce selected validation score")
 
         # Calculate per-class metrics
         precision, recall, f1, support = precision_recall_fscore_support(
@@ -104,7 +82,7 @@ def main():
         cm = confusion_matrix(y_val, y_pred, labels=cell_types)
         cm_df = pd.DataFrame(cm, index=cell_types, columns=cell_types)
         cm_df.index.name = "true_cell_type"
-        cm_df.to_csv(CM_DIR / f"confusion_matrix_{name}.csv")
+        cm_df.to_csv(cm_dir / f"confusion_matrix_{name}.csv")
 
         display = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=cell_types)
         size = max(9, len(cell_types) * 0.7)
@@ -113,7 +91,7 @@ def main():
                      values_format="d", colorbar=False)
         ax.set_title(f"{name} - Validation Confusion Matrix")
         fig.tight_layout()
-        fig.savefig(CM_DIR / f"confusion_matrix_{name}.png", dpi=200)
+        fig.savefig(cm_dir / f"confusion_matrix_{name}.png", dpi=200)
         plt.close(fig)
 
         # Check consistency with previous results
@@ -126,11 +104,11 @@ def main():
 
     # Save all per-class metrics
     pd.DataFrame(all_metrics).to_csv(
-        OUTPUT_DIR / "validation_per_class_metrics.csv", index=False
+        output_dir / "validation_per_class_metrics.csv", index=False
     )
     print("\nValidation analysis completed.")
-    print("Results saved to:", OUTPUT_DIR)
-    print("Test set was not loaded or used.")
+    print("Results saved to:", output_dir)
+    print("Test cells were not used for fitting or scoring.")
 
 
 if __name__ == "__main__":

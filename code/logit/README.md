@@ -52,7 +52,7 @@ Each dictionary run needs `train_codes.npz` and `validation_codes.npz`, with `ve
 **scGPT embeddings** — `code/scgpt/pretraining_handoff/outputs/baron/baron_scgpt_full.npz`
 - Required fields: `vectors`, `cell_ids`.
 
-**Finalized split manifest** — A CSV with `cell_id` and `split` columns. The script checks common paths such as `data/processed/baron_classical_v1/split_manifest.csv` and `data/processed/baron_split_manifest.csv`. If the correct finalized manifest is elsewhere or multiple candidates exist, update `find_final_manifest()` to select the correct file explicitly.
+**Finalized split bundle** — `data/processed/baron_splits_final/`, including the manifest (`cell_id`, `cell_type`, `donor`, `split`), `split_settings.json`, and exclusions. The shared loader checks final status, matching labels/donors and artifact hashes, including preprocessing and dictionary reports and scGPT metadata. Configure alternative locations in the validation runner's JSON config.
 
 Input feature bundles are obtained from the team handoff; this script does not generate dictionary codes or scGPT embeddings.
 
@@ -102,21 +102,17 @@ Install the Python dependencies in your project environment:
 python -m pip install numpy pandas scikit-learn matplotlib
 ```
 
-Place the required NPZ files and finalized manifest in the locations described above. From the repository root, run:
+Place the complete artifact bundles in the locations above. Use the integrated runner from the repository root:
 
 ```bash
-python code/logit/run_all_validation_coarse_to_fine.py
+python code/pipeline/run_validation.py --config code/pipeline/configs/validation_v1.json
 ```
 
-The main script resolves input paths relative to its own location, prints the coarse and fine results, and saves CSV files to `results/logit/`.
+This runs both tuning and analysis with shared verified inputs and a fresh timestamped output directory under `results/logit/`. Specify `--output` to name a new directory and `--threads` to change the default of one. Existing output directories are rejected. See [the pipeline README](../pipeline/README.md#integrated-validation-run) for configuration and run reports.
 
-After the main experiment has generated `results/logit/validation_best_C.csv`, run the follow-up analysis:
+The classifier modules also expose `main(bundle=..., output=...)` (search) and `main(bundle=..., results_dir=...)` (analysis) for the runner. Legacy direct execution uses `results/logit/` and now rejects existing search/analysis output directories; prefer the integrated runner for new experiments.
 
-```bash
-python code/logit/analyze_validation.py
-```
-
-This script loads the same train/validation representations and reads each feature set's selected `C` from `validation_best_C.csv`. It fits one logistic-regression model per feature set with the same settings, calculates per-class metrics, and creates confusion matrices. **It does not repeat the C search or load the test set.**
+Analysis refits the selected C values without repeating the search. It fails if a fit does not converge or its Macro-F1 differs from the selected run. The full scGPT bundle is loaded, but test rows are never used in classifier fitting or scoring.
 
 ## Environment and Reproducibility
 
@@ -152,7 +148,7 @@ These scores were used for hyperparameter selection and should **not** be presen
 
 ## Generated Outputs
 
-The main script creates these files under `results/logit/`:
+The runner creates these files under `<run>/classification/`:
 
 | Output | Contents |
 | --- | --- |
@@ -161,7 +157,7 @@ The main script creates these files under `results/logit/`:
 | `validation_all_runs.csv` | Both stages combined, including `C`, performance metrics, and convergence status. |
 | `validation_best_C.csv` | Selected `C` and validation metrics for each of the six representations. |
 
-The follow-up script writes the following files under `results/logit/validation_analysis/`:
+The follow-up script writes the following files under `<run>/classification/validation_analysis/`:
 
 | Output | Contents |
 | --- | --- |

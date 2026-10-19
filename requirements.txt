@@ -7,3 +7,7 @@ anndata
 
 # Classical representation learning
 scikit-learn
+
+# Direct numerical dependencies used by workflow scripts
+scipy
+threadpoolctl

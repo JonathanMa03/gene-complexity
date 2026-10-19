@@ -278,51 +278,12 @@ def make_fine_grid(coarse_best_C):
     return new_fine_values
 
 # Run the full experiment
-def main():
-    manifest_path = find_final_manifest()
-    manifest = pd.read_csv(manifest_path, dtype={"cell_id": str})
-
-    exp_train, train_ids, y_train = load_npz(EXPRESSION_DIR / "train.npz", "X")
-    exp_val, val_ids, y_val = load_npz(EXPRESSION_DIR / "validation.npz", "X")
-
-    if y_train is None or y_val is None:
-        raise KeyError("Expression train/validation NPZs need 'labels'")
-    if not set(np.unique(y_val)).issubset(set(np.unique(y_train))):
-        raise ValueError("Validation contains labels not present in train")
-
-    manifest = check_reference_splits(manifest, train_ids, val_ids)
-    manifest_ids = set(manifest["cell_id"])
-    print(f"Manifest: {manifest_path}")
-    print(f"Reference: train={len(train_ids)}, validation={len(val_ids)}")
-
-    # Load the six feature representations.
-    datasets = []
-    datasets.append(("Expression", exp_train, exp_val))
-
-    for name, folder_name in DICTIONARY_RUNS.items():
-        folder = DICTIONARY_DIR / folder_name
-        dict_train, dict_train_ids, _ = load_npz(folder / "train_codes.npz", "vectors")
-        dict_val, dict_val_ids, _ = load_npz(folder / "validation_codes.npz", "vectors")
-
-        if set(dict_train_ids) & set(dict_val_ids):
-            raise ValueError(f"{name}: train/validation overlap")
-
-        X_train = align_rows(dict_train, dict_train_ids, train_ids, f"{name} train")
-        X_val = align_rows(dict_val, dict_val_ids, val_ids, f"{name} validation")
-        datasets.append((name, X_train, X_val))
-
-    sc_vectors, sc_ids, _ = load_npz(SCGPT_PATH, "vectors")
-    keep = np.isin(sc_ids, list(manifest_ids))
-    removed = int((~keep).sum())
-    print(f"scGPT cells outside finalized manifest excluded: {removed}")
-    if removed != 63:
-        print("Warning: The number of excluded scGPT cells is not 63.")
-
-    sc_vectors = sc_vectors[keep]
-    sc_ids = sc_ids[keep]
-    sc_train = align_rows(sc_vectors, sc_ids, train_ids, "scGPT train")
-    sc_val = align_rows(sc_vectors, sc_ids, val_ids, "scGPT validation")
-    datasets.append(("scGPT", sc_train, sc_val))
+def main(bundle=None, output=None):
+    from validation_inputs import load_inputs, default_config
+    bundle = load_inputs(default_config()) if bundle is None else bundle
+    datasets, y_train, y_val = bundle["datasets"], bundle["y_train"], bundle["y_val"]
+    output = Path(output) if output is not None else OUTPUT_DIR
+    output.mkdir(parents=True, exist_ok=False)
 
     # Run coarse search and then fine search for every feature set.
     coarse_rows = []
@@ -355,17 +316,16 @@ def main():
         )
         fine_rows.extend(group_fine)
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     pd.DataFrame(coarse_rows).to_csv(
-        OUTPUT_DIR / "validation_coarse_runs.csv", index=False
+        output / "validation_coarse_runs.csv", index=False
     )
     pd.DataFrame(fine_rows).to_csv(
-        OUTPUT_DIR / "validation_fine_runs.csv", index=False
+        output / "validation_fine_runs.csv", index=False
     )
 
     all_results = pd.DataFrame(coarse_rows + fine_rows)
-    all_results.to_csv(OUTPUT_DIR / "validation_all_runs.csv", index=False)
+    all_results.to_csv(output / "validation_all_runs.csv", index=False)
 
     best_records = []
     for name, X_train, X_val in datasets:
@@ -379,7 +339,7 @@ def main():
     best_results = best_results.sort_values(
         "val_macro_f1", ascending=False, kind="stable"
     ).reset_index(drop=True)
-    best_results.to_csv(OUTPUT_DIR / "validation_best_C.csv", index=False)
+    best_results.to_csv(output / "validation_best_C.csv", index=False)
 
     # Print a summary.
     print("\n=== BEST VALIDATION C PER FEATURE SET ===")
@@ -399,8 +359,8 @@ def main():
         "validation_best_C.csv",
     ]
     for filename in output_files:
-        print(f"Saved: {OUTPUT_DIR / filename}")
-    print("Test set was not loaded or used.")
+        print(f"Saved: {output / filename}")
+    print("Test cells were not used for fitting or scoring.")
 
 
 if __name__ == "__main__":

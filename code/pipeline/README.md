@@ -32,7 +32,7 @@ Default directory: `data/processed/baron_classical_v1/` (ignored by Git).
 
 Use `np.load(path, allow_pickle=False)`. For new cells, require identical original gene order before using the saved column indices and `transform`; the lower-level transform accepts a matrix and cannot check gene names itself. The validated loader establishes this order for the current cohort.
 
-Dictionary learning should fit on `train.npz` only and encode the other splits using its fixed dictionary. The expression classifier should use these same `X` arrays directly. Dictionary codes and scGPT embeddings must retain cell IDs so the classifier can align them with the shared manifest. Full model fitting and classifiers are not implemented here.
+Dictionary learning should fit on `train.npz` only and encode the other splits using its fixed dictionary. The expression classifier should use these same `X` arrays directly. Dictionary codes and scGPT embeddings must retain cell IDs so the classifier can align them with the shared manifest. Classifier search and analysis are connected through the validation runner below; final test evaluation is not implemented.
 
 ```bash
 python -m unittest discover -s code/pipeline -p 'test_*.py'
@@ -87,3 +87,37 @@ Create that v2 config first; it is not supplied yet. Choose a modest agreed sear
 3. **scGPT representation:** the full embedding NPZ, field `vectors`, joined by cell ID to the same shared manifest and filtered to its retained cohort.
 
 Each representation feeds a separately fitted logistic classifier under the same agreed classifier tuning procedure. These are alternative feature sets, not concatenated features. Additional code/embedding scaling, if chosen, must be training-fitted. The classifier owner supplies validation classification metrics and uses the same class/probability mapping across comparisons.
+
+## Integrated validation run
+
+With the existing expression, dictionary-grid, and full scGPT artifacts installed:
+
+```bash
+python code/pipeline/run_validation.py --config code/pipeline/configs/validation_v1.json
+```
+
+This verifies inputs, runs the existing coarse-to-fine C search, and produces per-class metrics and six confusion matrices. It does not regenerate representations or select a final dictionary configuration. It opens train/validation expression and code files only. The full scGPT archive contains test rows, but only train/validation rows are passed to classifiers; no test metrics are computed.
+
+The JSON config names the expression directory, final split bundle, dictionary root/candidate mapping, and scGPT NPZ. Input paths resolve relative to the repository root (absolute paths also work). Change the config to use a later dictionary grid. The C grid and solver remain the classifier module's existing settings.
+
+By default, every invocation creates a UTC-timestamped directory under `results/logit/`. To name a run:
+
+```bash
+python code/pipeline/run_validation.py \
+  --config code/pipeline/configs/validation_v1.json \
+  --output results/logit/validation_v2 --threads 1
+```
+
+Existing output directories are rejected, including incomplete runs. Choose a new directory after correcting a failure; no prior files are overwritten. BLAS/OpenMP thread counts default to one for more consistent numerical behavior.
+
+Each run contains:
+
+- `config.json`: input configuration snapshot.
+- `run_report.json`: completion/failure status, input/source/output hashes, split sizes, checkpoint identity, classifier settings, Python/package versions, thread libraries, Git revision and working-tree status.
+- `run.log`: search and analysis output.
+- `classification/validation_*csv`: search results and selected C values.
+- `classification/validation_analysis/`: per-class metrics and confusion matrix CSVs/PNGs.
+
+Both classifier stages use `code/logit/validation_inputs.py`. It rejects label/donor mismatches, changed hashes, nonfinal splits, wrong dictionary training provenance, missing/extra cohort cells, and nonfinite features. Analysis fails on nonconvergence or a selected-score mismatch rather than silently publishing inconsistent results. The run report records failures and preserves partial output for diagnosis.
+
+The report fingerprints supplied artifacts; it does not independently audit scGPT pretraining overlap or regenerate upstream preprocessing. Cross-environment numerical differences are still possible. Resolve the teammate/local score differences and freeze model choices before implementing final test encoding/evaluation.
