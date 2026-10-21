@@ -6,7 +6,7 @@
 
 **Instructor:** Dr. Sichen Yang
 
-**Group members:** [Jonathan Ma](https://jonathanma03.github.io/), [Sijia Zhu](https://chesleaz.github.io/sijiazhu.github.io/), Jiatong Gao, Yunwei Chai
+**Group members:** [Jonathan Ma](https://jonathanma03.github.io/), [Sijia Zhu](https://chesleaz.github.io/sijiazhu.github.io/), [Jiatong Gao](https://www.linkedin.com/in/jiatonggao/), Yunwei Chai
 
 ## Abstract
 
@@ -29,7 +29,7 @@ git clone https://github.com/JonathanMa03/gene-complexity.git
 cd gene-complexity
 ```
 
-**Google Drive download: [TBD — add the project resource-bundle link here]**
+**Google Drive download: [Link](https://drive.google.com/drive/folders/1Wks3KnIjiaiPzKcNCEdM5vZ8o10RO_yV?usp=sharing)**
 
 Download both resources from that folder:
 
