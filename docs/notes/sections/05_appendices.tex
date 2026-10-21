@@ -1,0 +1,227 @@
+\section{Theory and optimization details}\label{app:theory}
+These derivations consolidate the design note and mathematical addendum.
+They apply established convex and constrained optimization facts to the
+implemented estimator; they do not assert a new recovery theorem.
+\subsection{Sparse coding: optimality, uniqueness, and diagnostics}
+For a row $x\in\mathbb R^p$ and a fixed $D\in\mathbb R^{K\times p}$, define
+\[
+ f_x(z)=\tfrac12\|x-zD\|_2^2+\alpha\|z\|_1,\qquad \alpha>0.
+\]
+Writing $g=(zD-x)D^\top$, convex subgradient optimality gives the necessary and sufficient conditions
+\[
+ g_k=-\alpha\operatorname{sign}(z_k)\quad(z_k\ne0),\qquad
+ |g_k|\le\alpha\quad(z_k=0).
+\]
+Consequently $z=0$ is optimal exactly when $\|xD^\top\|_\infty\le\alpha$. The executable diagnostics use the coordinate residual
+\[
+ r_k=\begin{cases}|g_k+\alpha\operatorname{sign}(z_k)|,&z_k\ne0,\\
+ \max(|g_k|-\alpha,0),&z_k=0.
+ \end{cases}
+\]
+Exact nonzero coefficients are used for this optimality diagnostic, distinct from the $10^{-6}$ activity threshold used for sparsity summaries. Small residuals certify approximate coding optimality numerically, not statistical recovery of a true gene program.
+
+\begin{proposition}[Conditional uniqueness and error certificate]
+If $\mu=\lambda_{\min}(DD^\top)>0$, $f_x$ is $\mu$-strongly convex and has a unique minimizer $z^*$. For any subgradient $v\in\partial f_x(z)$,
+\[
+ \|z-z^*\|_2\le\frac{\|v\|_2}{\mu},\qquad
+ f_x(z)-f_x(z^*)\le\frac{\|v\|_2^2}{2\mu}.
+\]
+\end{proposition}
+\begin{proof}
+The quadratic Hessian is $DD^\top\succeq\mu I$. Adding a convex L1 term preserves strong convexity. Strong monotonicity with $0\in\partial f_x(z^*)$ gives
+$\mu\|z-z^*\|^2\le\langle v,z-z^*\rangle$; apply Cauchy--Schwarz. The strong subgradient inequality at $z$ gives
+$f_x(z)-f_x(z^*)\le\langle v,z-z^*\rangle-\mu\|z-z^*\|^2/2$, whose maximum over the displacement is $\|v\|^2/(2\mu)$.
+\end{proof}
+The coordinatewise least-norm subgradient has absolute coordinates $r_k$. A reported infinity residual yields $\|v\|_2\le\sqrt K\|r\|_\infty$. The bounds require positive $\mu$ and can be uninformative for an ill-conditioned dictionary. They do not imply uniqueness of the jointly learned factors.
+
+\begin{proposition}[What increasing the penalty actually guarantees]
+Fix $D,x$ and let $z_j$ minimize $E(z)+\alpha_jL(z)$, where $E=\|x-zD\|^2/2$, $L=\|z\|_1$, and $0<\alpha_1<\alpha_2$. Then $L(z_2)\le L(z_1)$ and $E(z_2)\ge E(z_1)$.
+\end{proposition}
+\begin{proof}
+The two optimality inequalities are
+$E_1+\alpha_1L_1\le E_2+\alpha_1L_2$ and
+$E_2+\alpha_2L_2\le E_1+\alpha_2L_1$.
+Adding gives $(\alpha_2-\alpha_1)(L_2-L_1)\le0$. Substitute into the first inequality to obtain the reconstruction statement.
+\end{proof}
+This does not establish monotonic support cardinality for correlated atoms, nor a monotonic relation across independently learned dictionaries. Predictive accuracy need not be monotone in either quantity.
+
+\subsection{Joint optimization and identifiability}
+For $X\in\mathbb R^{n\times p}$, use
+\[
+ \min_{Z,D}\ \tfrac1n\left(\tfrac12\|X-ZD\|_F^2+\alpha\|Z\|_1\right),
+ \qquad\|d_k\|_2\le1.
+\]
+Dividing the entire objective by $n$ leaves minimizers unchanged. Without the norm constraint $(Z/c,cD)$ preserves reconstruction while reducing the penalty. Conditional subproblems are convex, but joint optimization is nonconvex. Mini-batch early stopping does not prove stationarity or global optimality. In addition to coding KKT residuals, record
+\[
+ \|D-\Pi_{\mathcal D}(D-G)\|_F,\qquad
+ G=Z^\top(ZD-X)/n,
+\]
+where projection normalizes only rows exceeding unit norm. A zero projected-gradient residual is first-order optimality for the fixed-$Z$ constrained problem; a nonzero value measures a remaining dictionary-update residual, not a bound on global suboptimality. The implementation is based on established online dictionary methods, but we do not transfer their asymptotic theorems to our finite solver run without verifying assumptions~\cite{mairal2010}.
+
+Permutation and simultaneous sign changes preserve the objective. For two dictionaries in the \emph{same fold and gene coordinates}, compare normalized atom similarities $S_{ij}=|\langle d_i,d'_j\rangle|/(\|d_i\|\|d'_j\|)$ by solving
+\[
+ \max_{\pi\in\mathfrak S_K}\sum_{i=1}^K S_{i,\pi(i)}.
+\]
+We use linear assignment, align signs, and report matched cosines, top-20 absolute-weight gene Jaccard overlaps, and training-code correlations. This one-to-one metric can penalize program splitting/merging; it is not a complete equivalence test. Seeds are repeated computations, not independent biological samples. Controlled runs vary normalized training-cell initial atoms while fixing mini-batch random state 42; no best seed is selected.
+
+\subsection{Scaling changes regularization geometry}
+For row features $h$ and training-fitted center $m$ and diagonal scale $S$, use $u=(h-m)S^{-1}$ for \emph{every} representation. With class weights $W$ and an unpenalized intercept $b$, minimize
+\[
+ \frac1n\sum_i\left[-(u_iW+b)_{y_i}+\log\sum_c e^{(u_iW+b)_c}\right]
+ +\frac\lambda2\|W\|_F^2.
+\]
+Our installed sklearn implementation uses $C=1/(n\lambda)$ for this mean-loss convention~\cite{sklearn}. This maintains the same regularization definition when inner and outer training sample sizes differ. Using a fixed $C$ instead corresponds to a different $\lambda$ as $n$ changes.
+
+If original-coordinate weights are $B=S^{-1}W$, the penalty is $\lambda\|SB\|_F^2/2$. Thus normalization is part of the statistical model: tuning a single scalar $C$ cannot undo arbitrary coordinate-wise rescaling. With positive scales, standardization removes arbitrary affine changes in feature units (up to intercept adjustment). It does not make representation dimensions, information content or intrinsic geometry identical. Strong convexity in penalized weight directions does not remove the softmax common-intercept gauge; do not claim unrestricted uniqueness of $(W,b)$.
+
+For the matched-gene secondary experiment, expression and dictionary use the 1,879 measured genes from the fixed 2,000-gene scGPT panel. Classical per-cell library normalization still uses all raw genes, followed by log1p and training centering/scaling. scGPT retains its required panel processing and pretrained nonlinear transform; identical biological features do not imply identical preprocessing. This is a matched-gene control, not proof that all confounding disappears. Standardization is primary; an unstandardized ablation is reported without selecting between them using outer scores.
+
+\subsection{Nested grouped evaluation and aggregation}
+For each outer donor $d$, restrict all fitting and tuning to the other three donors. Each of those three serves once as inner validation while the other two supply training. Refit classical preprocessing, dictionary and classifier scaler inside every inner fold. Choose $\lambda$ by mean inner-donor Macro-F1; dictionary scores also average the three predeclared initialization seeds. Ties prefer stronger regularization, and a candidate must converge in every inner fit. Then refit on the three outer training donors and evaluate only donor $d$.
+
+Report all donor scores. Average dictionary seeds \emph{within donor} before computing the equal-donor mean and donor standard deviation. Donors have unequal cell counts; pooling cells targets a different weighting. Do not treat three seeds times four donors as twelve independent biological replicates or use a cell-level bootstrap to claim donor-level uncertainty. Outer training sets overlap; four donors provide limited evidence even with group separation. Learned hyperparameters $K,\alpha$ and the cohort remain inherited exploratory choices, not nested-selected choices in this secondary experiment.
+
+
+\subsection{Illustrative updates and implementation distinction}
+For illustration, a proximal-gradient update is
+\[
+z^{(t+1)}=S_{\eta\alpha}\!\left(z^{(t)}-\eta(z^{(t)}D-x_i)D^\top\right),
+\]
+where $S_a(u)=\operatorname{sign}(u)\max(|u|-a,0)$ acts entrywise. For nonzero $D$, a step size $0<\eta\leq1/\lVert DD^\top\rVert_2$ is a standard conservative choice. Proximal methods and their accelerated variants are developed by Beck and Teboulle~\cite{beck2009}. The update above is the unaccelerated step, not the full FISTA algorithm. This explains the role of soft thresholding; the reported estimator uses coordinate descent for this subproblem.
+
+\paragraph{Dictionary updates.}
+With $Z$ fixed, updating $D$ is a convex constrained least-squares problem. A projected-gradient step takes
+\[
+\widetilde D=D-\eta_D Z^\top(ZD-X),\qquad
+ d_k^{\mathrm{new}}=\frac{\widetilde d_k}{\max(1,\lVert\widetilde d_k\rVert_2)}.
+\]
+An appropriate step size is needed; arbitrary gradient steps followed by projection do not guarantee improvement. Alternating sparse-code and dictionary updates exploits the blockwise convex structure, but the joint problem is nonconvex and initialization matters. Exact block minimization cannot increase the objective, yet this does not establish convergence to a global optimum. Mini-batch or approximate updates require their own convergence diagnostics.
+
+
+The proximal and projected steps explain the objectives; the reported runs
+use the library mini-batch/coordinate-descent solver, not a custom FISTA
+implementation. The projected step above uses the summed loss; dividing its
+gradient by $n$ gives the mean-loss convention used by our diagnostic.
+
+\section{Experimental workflow and reproducibility}\label{app:workflow}
+\subsection{Resources and artifact contract}
+The root README documents installation, resource destinations, and all CLI
+parameters. Exact offline reproduction requires the raw
+\path{data/processed/baron_raw.h5ad}, the final split directory's
+\path{baron_split_manifest.csv}, \path{split_settings.json}, and
+\path{baron_exclusions.csv}, and four files under
+\path{external/scgpt/pretraining_handoff/outputs/baron/}:
+\path{baron_scgpt_full.npz}, \path{baron_scgpt_full.metadata.json},
+\path{checkpoint_selection.json}, and \path{preparation_report.json}.
+These large/local artifacts are not in Git; obtain the compatible bundle
+from the authors. A public complete-bundle URL is not yet documented.
+The optional weight/sampling download and extraction environment are
+specified in \path{docs/logging/scgpt_handoff.md}. Classification from full embeddings
+does not require weights or a GPU.
+
+Raw counts are preserved in AnnData together with cell types, donors, and gene
+symbols. Final manifests contain \texttt{cell\_id, cell\_type, donor, split}.
+Classical NPZ files contain features, cell IDs, labels, donors, and ordered
+gene IDs; fitted preprocessing stores selected columns and training statistics.
+Dictionary outputs store atoms, ordered genes, training/validation codes,
+parameters, and diagnostics. Classifier NPZ files contain coefficients,
+intercepts, and class order; JSON records bind source and output hashes.
+Numeric/string arrays are loaded without object pickling. Joins reject duplicate
+or missing IDs, nonfinite features, mismatched labels, and gene-order changes.
+Different feature dimensions are intentional; representations are not concatenated.
+
+\subsection{Execution order}
+Run the following from the repository root in the project environment.
+Reusing the exact supplied raw/split bundle is preferable for matching the
+recorded extraction hashes. A fresh public-data build may serialize differently;
+inspect provenance differences rather than replacing hashes to bypass checks.
+\begin{verbatim}
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e .
+# Public-data route: Rscript and a writable R library are required.
+python -m gene_complexity download-data
+python -m gene_complexity preprocess-data --scgpt-confirmed
+# Supply the four compatible embedding files before this check.
+python -m gene_complexity load-scgpt
+# Optional execution check; no model selection or test scoring:
+python -m gene_complexity run-end-to-end --check-only
+python -m gene_complexity run-end-to-end --plots
+# Full validation selection in a fresh output directory:
+python -m gene_complexity tune-models --output results/workflow/reproduction
+\end{verbatim}
+If classical features already exist, skip their creation. Downloading and
+preprocessing are unnecessary for the smoke route when the eight exact inputs
+are supplied. For full selection, review \path{recommended_models.csv} and
+use its candidate/C choices with the generated \path{validation_config.json}.
+For each method, train with \texttt{gene-complexity train-logistic}, evaluate with
+\path{gene-complexity evaluate-validation --freeze}, and then use
+\texttt{gene-complexity run-test} with that matching selection file. The root README
+provides complete arguments. No preprocessing or classifier refit on the
+training-plus-validation union is used in the reported experiment.
+\begin{verbatim}
+python -m gene_complexity run-donor-study \
+  --output results/workflow/donor_reproduction
+python -m gene_complexity summarize-donor-study \
+  --study results/workflow/donor_reproduction --plots
+\end{verbatim}
+The donor study refits folds from raw data rather than reusing the original
+training-feature bundle. Output paths must be fresh. Preserve frozen models
+and their referenced inputs; ignored local artifacts are not transferred by a
+Git clone. Test scores must not drive further tuning.
+
+\subsection{Versions, provenance, and report construction}
+The donor protocol records Python 3.14.6, NumPy 2.5.3, SciPy 1.18.1,
+scikit-learn 1.9.1, and pandas 3.0.6. The separate CPU embedding extraction
+records PyTorch 2.11.0+cu128 and NumPy 2.2.6, float32, four threads, batch
+size 8, and seed 2026092500. These are recorded environments, not a claim
+that an unpinned dependency installation gives identical binaries or outputs.
+The extraction metadata does not identify a CPU model; no hardware-normalized
+runtime comparison is made.
+
+The raw AnnData SHA-256 is
+\path{452177f01994c2f81ad79cb31b1aaf562b12ff4d56d52299dce1f5ed18c08176};
+the shared manifest hash is
+\path{bb1e6f0810e20d02400892743c49077323d30bb67e57e043387da84115affca5};
+the embedding archive hash is
+\path{08ee0912bc6f43f3ecc79aed1f4bdc4683587f47e3e47547be282aa5927f47a6}.
+Full source, input, and output hashes are in the run reports. The preserved
+pre-test freeze manifest describes its original pre-test state; the later
+test evaluation report separately records completion. Model files were not
+changed by evaluation. No single repository commit is asserted to describe
+all runs; recorded script hashes identify the executed sources.
+
+The table/figure snapshots included here are generated from saved artifacts
+by \path{gene-complexity build-report-assets}. Its manifest records source and
+snapshot hashes. Rebuilding assets requires \path{external/report_artifacts/};
+compiling this report requires only the tracked snapshots. From
+\path{docs/notes}, compile \texttt{main.tex} twice with pdfLaTeX, or upload
+that directory to Overleaf and choose \texttt{main.tex} as the main document.
+The root assembles six section files; the eight-page main-report budget
+excludes these appendices and references. The pre-consolidation notes are preserved locally
+in \path{backups/notes_before_consolidation_*.zip}.
+
+\section{Supplementary tables}\label{app:tables}
+\input{assets/tables}
+\FloatBarrier
+\section{Supplementary figures}\label{app:figures}
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.94\linewidth]{donor_performance.png}
+\caption{Retrospective donor Macro-F1 by representation and classifier scaling.
+Dictionary scores average initialization seeds within donor; connecting donors
+does not imply independent repeated experiments or a temporal ordering.}
+\end{figure}
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.94\linewidth]{initialization_stability.png}
+\caption{Controlled initialization diagnostics. Prediction stability and
+matched-atom similarity measure distinct properties. Seed pairs are repeated
+computations on the same training folds, not biological replicates.}
+\end{figure}
+\begin{figure}[htbp]\centering
+\includegraphics[width=0.98\linewidth]{cell_type_activity.png}
+\caption{Original selected dictionary: signed cell-type mean activities,
+standardized using training-code statistics. Eight displayed atoms are selected
+by training-only cell-type contrast; validation uses the same atoms and scale.
+This descriptive visualization is not a pathway-enrichment test.}
+\end{figure}
+\FloatBarrier

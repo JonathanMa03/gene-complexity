@@ -303,11 +303,14 @@ __pycache__/
 # Logistic regression generated outputs
 /results/logit/
 
-# Local scGPT embedding files
-/code/scgpt/pretraining_handoff/outputs/baron/
+# Downloadable TA resource bundle (distributed through Google Drive)
+/external/
 
 # Reproducible script workflow outputs
 /results/workflow/
 
 # Local frozen-model preservation archives
 /backups/
+
+# Compile the consolidated report locally; track LaTeX source and figure assets.
+/docs/notes/main.pdf

@@ -1,0 +1,12 @@
+{
+  "expression_dir": "data/processed/baron_classical_v1",
+  "split_dir": "external/baron_splits_final",
+  "dictionary_dir": "results/dict-learning/baron_grid_v1",
+  "dictionary_runs": {
+    "Dictionary_K16_alpha1": "k16_a1.0_s42_e10",
+    "Dictionary_K16_alpha5": "k16_a5.0_s42_e10",
+    "Dictionary_K32_alpha1": "k32_a1.0_s42_e10",
+    "Dictionary_K32_alpha5": "k32_a5.0_s42_e10"
+  },
+  "scgpt_path": "external/scgpt/pretraining_handoff/outputs/baron/baron_scgpt_full.npz"
+}

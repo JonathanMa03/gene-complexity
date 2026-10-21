@@ -1,266 +1,32 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{gensymb}
-\usepackage{setspace}
-\usepackage{ragged2e}
-\usepackage{enumerate}
-\usepackage{amsthm}
-\usepackage{graphicx}
-\usepackage{subcaption}
-\newtheorem{problem}{Problem}
-\newtheorem{proposition}{Proposition}
-\newtheorem*{solution}{Solution}
-\usepackage{amssymb}
-\usepackage{mathtools}
-\usepackage{xcolor}
-\usepackage{array}
+\documentclass[11pt]{article}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
-\usepackage{lmodern}
-\usepackage{tabularx}
-\usepackage{pesmath}
-\usepackage{fancyhdr}
-\usepackage{graphicx}
-\graphicspath{{images/}}
-
-\newtheorem{lemma}{Lemma}
-
-
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{Group 1}
-\chead{Final project}
-\lhead{EN.553.740}
-\rfoot{Page \thepage}
-
-
-
-
-
-\usepackage{booktabs}
-\usepackage{placeins}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,tabularx,graphicx}
+\usepackage{placeins,fancyhdr}
 \usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
 \setlength{\headheight}{14pt}
-\newcommand{\TBD}[1]{\par\noindent\textcolor{blue!65!black}{\textbf{TBD:} #1}\par}
-\newcommand{\placeholderfigure}[1]{%
-  \fbox{\parbox[c][1.0in][c]{0.94\linewidth}{\centering\textbf{Figure placeholder}\\#1}}}
-
-% MAIN REPORT BUDGET: 8 pages TOTAL, including title, abstract, figures and tables.
-% Suggested allocation (not forced page breaks):
-% title/abstract/introduction 1.25; related work 0.5; data 0.75;
-% methods/theory 1.5; experiment design 0.75; results 2.0;
-% discussion/conclusion 1.25. Total = 8 pages.
-% References and appendices are outside this budget. Keep all essential
-% contributions, strongest evidence and major conclusions BEFORE main-report-end.
-% Do not rely on appendix review or reduce font/margins to accommodate extra text.
-
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\lhead{EN.553.740}\chead{Final project}\rhead{Group 1}\rfoot{\thepage}
+\newtheorem{proposition}{Proposition}
+\graphicspath{{assets/}}
 \title{\textbf{Interpretable Gene Programs or Foundation Models?}\\
 \large Comparing Sparse Dictionary Learning and scGPT\\for Single-Cell Classification}
 \author{Jonathan Ma \and Sijia Zhu \and Jiatong Gao \and Yunwei Chai}
-\date{EN.553.740 Machine Learning 1\\Instructor: Dr. Sichen Yang\\\textit{Draft report scaffold}}
-
+\date{EN.553.740 Machine Learning 1\\Instructor: Dr. Sichen Yang}
+% Compile from docs/notes. All six includes are parts of this single report.
+% Title, abstract, figures and tables count toward the eight-page main limit.
+% The first include contains the title/abstract to avoid an empty title-only page.
 \begin{document}
-\maketitle
-\thispagestyle{fancy}
-
-\begin{abstract}
-\TBD{Write a concise abstract stating the question, controlled comparison,
-dataset, main quantitative result, interpretability finding, and conclusion.
-Compare processed expression, sparse dictionary codes, and frozen scGPT
-embeddings using the same logistic-regression model family. Insert final results
-only after model selection is frozen and the final evaluation is complete.}
-\end{abstract}
-
-\section{Introduction}
-\TBD{Motivate the tradeoff between predictive utility and directly inspectable
-gene programs in single-cell representation learning. State the research question:
-what does the pretrained scGPT representation add beyond a sparse representation
-learned from the target training data?}
-\TBD{State the final contributions in two or three concrete points: a controlled
-classification comparison, an analysis of sparse gene programs, and a
-reproducible evaluation. Revise these to match the work actually completed.}
-
-\section{Related Work}
-\TBD{Briefly connect Lasso and sparse coding to dictionary learning
-(Tibshirani; Olshausen and Field; Mairal et al.), gene-program analysis
-(Kotliar et al.), scGPT (Cui et al.), and pretraining-scale evaluation
-(DenAdel et al.). Add verified citations from the literature in jm.tex.
-Explain how our signed dictionary differs from nonnegative factorization.}
-
-\section{Data and Shared Evaluation Cohort}
-\subsection{Dataset and provenance}
-The project uses the Baron human pancreas dataset (GSE84133), obtained through
-the \texttt{scRNAseq} function \texttt{BaronPancreasData}. The prepared dataset contains 8,569 cells,
-20,125 genes, four donors, and 14 annotated cell types.
-\TBD{Cite the original dataset and software; summarize count validation,
-metadata preservation, and any relevant limitations of the annotations.}
-
-\subsection{Exclusions and fixed splits}
-Classes with fewer than 30 cells are excluded from the primary comparison,
-removing 63 cells from the T-cell, Schwann, epsilon, and mast classes. The
-remaining 8,506 cells span ten classes. A cell-type-stratified random split
-with seed 42 assigns 5,954 cells to training, 1,277 to validation, and 1,275 to
-test, approximating a 70/15/15 allocation. Donors can occur in multiple splits;
-this evaluates new cells from the same donor pool, not unseen-donor transfer.
-No additional cells were excluded by the scGPT panel check.
-\TBD{Confirm these counts against the final run manifest. Explain the practical
-rare-class cutoff and small remaining evaluation classes. Keep the split's
-scientific limitation in the main report, not only in an appendix.}
-
-\section{Methods and Theoretical Basis}
-\subsection{Classical expression preprocessing}
-The current baseline normalizes each cell to 10,000 total counts across the
-original gene set, applies $\log(1+x)$, selects 2,000 genes by training-set
-log-expression variance, and uses training-fitted gene-wise centering and
-scaling. Identical fitted transforms are applied to validation and test cells.
-\TBD{Confirm or revise this provisional recipe after coordination with the
-classifier teammate. Specify that variance ranking is not dispersion-adjusted
-HVG selection. Explain that scGPT has separate input processing.}
-
-\subsection{Sparse dictionary learning}
-Let $X\in\mathbb{R}^{n\times p}$ contain processed expression, with cells in
-rows. We represent it by $ZD$, where $Z\in\mathbb{R}^{n\times K}$ contains
-cell activities and $D\in\mathbb{R}^{K\times p}$ contains gene-program atoms:
-\begin{equation}
-\min_{Z,D}\;\frac12\|X-ZD\|_F^2+\lambda\|Z\|_1,
-\qquad \|d_k\|_2\leq1\quad(k=1,\ldots,K).
-\label{eq:dictionary}
-\end{equation}
-The atom constraint prevents reducing the sparsity penalty by rescaling the
-factors. With $D$ fixed, each cell's code solves a convex Lasso problem; learning
-both factors is nonconvex. Validation and test codes must use the learned
-training dictionary without updating its atoms.
-\TBD{Describe the final mini-batch solver, signed coefficients, stopping rule,
-initialization, and selected $K$ and $\lambda$. Briefly explain the
-reconstruction--sparsity tradeoff and limits of convergence claims. Keep this
-core argument here; put detailed updates and derivations in the appendix.}
-
-\subsection{Frozen scGPT embeddings}
-The supplied comparison checkpoint is
-\texttt{sctab\_seed0\_n1600000\_scgpt}: a small custom scGPT model pretrained on
-1.6 million cells with sampling seed 0. It is not the original published large
-scGPT checkpoint. Its frozen representation uses 128-dimensional,
-L2-normalized CLS embeddings. The Baron input matches 1,879 of the fixed 2,000
-panel genes; missing panel genes are zero-filled by the extractor.
-\TBD{Cite scGPT, summarize the checkpoint choice made without Baron
-classification scores, and describe binning and extraction settings. Verify
-against the supplied metadata. Pretraining overlap remains unaudited unless a
-subsequent audit resolves it; do not claim independent pretraining/test data.}
-
-\subsection{Common logistic classifier}
-\TBD{Describe three separately fitted L2-regularized multinomial logistic
-classifiers: processed expression directly, dictionary codes, and scGPT
-embeddings. Specify the common tuning procedure, class ordering, any
-training-fitted representation scaling, and optimization settings. Do not
-concatenate representations unless explicitly introducing a separate experiment.}
-
-\section{Experimental Design}
-\TBD{Describe validation-only selection and the agreed search budget. Record
-revisions to the provisional dictionary grid after the classifier teammate's
-initial validation results. The starter grid is $K\in\{16,32\}$ and
-$\lambda\in\{1,5\}$, seed 42, with a ten-epoch ceiling; this is not yet the
-final model-selection result. State how classifier regularization is tuned
-consistently across representations.}
-\TBD{Specify Macro-F1 as primary, plus balanced accuracy and multiclass log
-loss. Explain cell-ID alignment, identical evaluation cells, and the rule that
-final test results are inspected only after choices are frozen. If reporting
-uncertainty or repeated runs, define the procedure and what variability it
-captures; do not assume cells from the same donor are independent.}
-
-\section{Results}
-\subsection{Classification performance}
-\TBD{Lead with the strongest quantitative comparison and answer the research
-question. Keep validation selection separate from final held-out performance.
-Do not fill this table with reconstruction metrics or smoke-test outputs.}
-\begin{table}[htbp]
-\centering
-\caption{Final held-out classification results (not yet evaluated).
-Higher Macro-F1 and balanced accuracy are better; lower log loss is better.}
-\label{tab:classification}
-\begin{tabular}{lccc}
-\toprule
-Representation & Macro-F1 & Balanced accuracy & Log loss\\
-\midrule
-Processed expression & TBD & TBD & TBD\\
-Sparse dictionary codes & TBD & TBD & TBD\\
-Frozen scGPT embeddings & TBD & TBD & TBD\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\subsection{Predictive utility and sparsity}
-\begin{figure}[htbp]
-\centering
-\placeholderfigure{Validation performance versus dictionary size/penalty,\\with code sparsity indicated.}
-\caption{TBD: show the principal tradeoff supporting the selected dictionary.
-Specify the evaluation split and uncertainty, if any.}
-\label{fig:tradeoff}
-\end{figure}
-\TBD{Discuss whether compression and sparse activity preserve useful cell-type
-information. Report reconstruction as a diagnostic rather than evidence of
-classification success. Summarize convergence and stability only where tested.}
-
-\subsection{Gene-program interpretation}
-\begin{figure}[htbp]
-\centering
-\placeholderfigure{Selected atoms: high-weight genes and\\cell-type activation patterns.}
-\caption{TBD: strongest interpretable gene-program evidence. Distinguish positive
-and negative weights and describe the selection criterion for displayed atoms.}
-\label{fig:programs}
-\end{figure}
-\TBD{Discuss a small number of informative programs with biological support
-where available. Account for atom sign/permutation ambiguity. Avoid equating
-associations with causal mechanisms or claiming every atom is a unique pathway.}
-
-\section{Discussion and Limitations}
-\TBD{Explain the performance--interpretability tradeoff supported by the final
-results, including whether scGPT adds linearly accessible predictive information.
-Discuss why the expression baseline matters. Avoid conclusions based solely on
-model size or reconstruction.}
-\TBD{Keep major limits in the main text: shared donors across splits, excluded
-rare classes, small per-class evaluation samples, missing panel genes,
-custom-checkpoint scope, unaudited pretraining overlap, and validation-search
-limitations. Add computational or stability limitations observed in final runs.}
-
-\section{Conclusion}
-\TBD{Give the direct answer to the research question and the principal evidence
-in a short paragraph. State what remains unresolved. Do not introduce a new
-experiment or essential qualification only in the appendix.}
-
-% This marker must remain BEFORE references and appendices.
-\FloatBarrier
-\label{main-report-end}
-\typeout{MAIN REPORT ENDS ON PAGE \thepage; LIMIT IS 8 PAGES.}
-\clearpage
-
-\section*{References}
-% Replace this placeholder with a bibliography, or a thebibliography environment.
-% References do not count toward the eight-page main-report limit.
-\TBD{Insert the verified, cited bibliography. Start from jm.tex, and add the
-Baron dataset and implementation/software references actually used. Ensure every
-in-text citation resolves and every claim is supported by the relevant source.}
+\input{sections/01_introduction_related_work}
+\input{sections/02_data_methods}
+\input{sections/03_experimental_design}
+\input{sections/04_results_discussion}
 
 \clearpage
 \appendix
-\section{Supplementary Theory}
-\TBD{Detailed sparse-coding derivation, proximal/alternating updates, atom-norm
-constraint reasoning, and additional optimization discussion. The main text
-must retain the objective and key theoretical insights.}
-
-\section{Implementation and Reproducibility}
-\TBD{Commands, package versions, checkpoint/data/manifest hashes, artifact
-schemas, seeds, batch sizes, precision, and hardware. Record the final code
-revision and access instructions without including private credentials.}
-
-\section{Supplementary Experiments and Figures}
-\TBD{Complete candidate-grid results, per-class metrics, confusion matrices,
-additional atoms, convergence diagnostics, and seed sensitivity where available.
-Only supplementary evidence belongs here; the strongest results remain in the
-main report. Clearly label analyses that were not performed.}
-
-\section{Team Contributions}
-\TBD{Summarize each member's actual contributions to preprocessing, scGPT,
-dictionary learning, classification, verification, and writing.}
-
+\input{sections/05_appendices}
+\input{sections/06_references}
 \end{document}

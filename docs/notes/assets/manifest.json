@@ -1,0 +1,23 @@
+{
+  "generator": "gene_complexity/reporting/paper.py",
+  "generator_sha256": "a6b6b39b3a1e40140a2113c963f1f07a3fc408ae942cbd52513a62ae7c2f72e4",
+  "source_sha256": {
+    "external/report_artifacts/donor_robustness_v2/cell_type_by_donor.csv": "5fc69a4aa98eb034ec4d4199d33dd9fc518a51c8aaeb97315e41b459b652c720",
+    "external/report_artifacts/model_selection_v2/dictionary_ranking.csv": "52f29a1d62b392195cb099ae5f2a6b3134cf831640f907740cb7f78e3b626198",
+    "external/report_artifacts/donor_robustness_v2/donor_means.csv": "8cc9f1fd78439d49cb4a770107eff97f88413f2ed9544329ef395d2495a07e4f",
+    "external/report_artifacts/donor_robustness_v2/seed_variation.csv": "e03547da777b14ffff4e1392f2d1a1b86f22b76872942bf9b39d1c59826fe730",
+    "external/report_artifacts/frozen_models_v2/test/baseline/per_class.csv": "1d2b6bb58ad12cc84069628a138cb5c59dfd98677c8bc90708c10d8b3b5fa71f",
+    "external/report_artifacts/frozen_models_v2/test/dictionary/per_class.csv": "ac8721b2ee9c678e662964cbda1e5b8b3142e97a0d88f8a8a07aed0b46877a42",
+    "external/report_artifacts/frozen_models_v2/test/scgpt/per_class.csv": "4c7a0c0116e8b3f6734c7bd7453c36cc31fd584e970b986cabc013167760631a",
+    "external/report_artifacts/model_selection_review_v2/dictionary/cell_type_activity.csv": "3cd51e7b28010258f73044d463e005c775ad597e521b388c75129262e89d0742",
+    "external/report_artifacts/donor_robustness_v2_analysis/donor_performance.png": "6ce329da0b52f1bf2dc293db8dd746506a8814817aae107214571ed80f790595",
+    "external/report_artifacts/donor_robustness_v2_analysis/initialization_stability.png": "f096c792d1cf0d5781563898464fd8b1117525e6d9503c483f1a62c5ac541d0f",
+    "external/report_artifacts/model_selection_review_v2/dictionary/cell_type_activity.png": "8a0de4131a0bbb0b69bbe69e037d17b8b3ec990ca8e1939ff9c0ee00348b98cb"
+  },
+  "snapshot_sha256": {
+    "tables.tex": "6d7ba8522a3c52582ab0bb5e17d7bf6260f8936325588463eda39fae0c661b0c",
+    "donor_performance.png": "6ce329da0b52f1bf2dc293db8dd746506a8814817aae107214571ed80f790595",
+    "initialization_stability.png": "f096c792d1cf0d5781563898464fd8b1117525e6d9503c483f1a62c5ac541d0f",
+    "cell_type_activity.png": "8a0de4131a0bbb0b69bbe69e037d17b8b3ec990ca8e1939ff9c0ee00348b98cb"
+  }
+}
