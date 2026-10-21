@@ -8,7 +8,7 @@
 
 **Group members:** [Jonathan Ma](https://jonathanma03.github.io/), [Sijia Zhu](https://chesleaz.github.io/sijiazhu.github.io/), Jiatong Gao, Yunwei Chai
 
-## Project Overview
+## Abstract
 
 This project will compare pretrained scGPT representations with sparse dictionary learning for cell-type classification using public single-cell RNA-sequencing data. Dictionary learning represents each cell as a sparse combination of learned gene programs, providing an interpretable alternative to foundation-model embeddings. Both representations will be evaluated with the same regularized multinomial logistic regression classifier, alongside a baseline using processed gene-expression features directly.
 
@@ -16,67 +16,66 @@ We will compare Macro-F1, balanced accuracy, and predictive log loss, and examin
 
 See the [project abstract](docs/references/group1_abstract.pdf) and [project proposal](docs/references/group1_proposal.pdf) for more detail.
 
-## Data
+## Reproduce with the notebook
 
-Download the [Pancreas benchmark dataset](https://exampledata.scverse.org/scvi-tools/pancreas.h5ad) and save it as `data/raw/pancreas.h5ad`. This dataset is described in the [scvi-tools reference-mapping tutorial](https://docs.scvi-tools.org/en/latest/tutorials/notebooks/multimodal/scarches_scvi_tools.html).
+Clone the repository, download the two resources below, install the project in a virtual environment, and run **[workflow.ipynb](workflow.ipynb) from top to bottom**. This setup has been verified in a clean checkout without previous results or the old `code/` directory.
 
-From the repository root:
+The default run trains and evaluates logistic classifiers using expression, sparse dictionary, and scGPT features. It displays validation metrics and figures and saves them under `results/workflow/ta_notebook_smoke_v2/`. This is a small real-data execution check; model selection, final test evaluation, and donor experiments require explicitly enabling the notebook's optional sections.
 
-```bash
-mkdir -p data/raw
-curl -fL https://exampledata.scverse.org/scvi-tools/pancreas.h5ad \
-  -o data/raw/pancreas.h5ad
-```
-
-Downloaded datasets are excluded from Git. Each teammate should download their own local copy. Open `environment_test.ipynb` to inspect the expression data and cell metadata. Preprocessing details will be added as the pipeline is developed.
-
-## Methods
-
-TBD — Representation-learning pipelines, classifier setup, and evaluation procedures will be added here.
-
-## Repository Structure
-
-```text
-gene-complexity/
-├── .github/
-│   └── CODEOWNERS
-├── code/
-│   ├── dict-learn/              # Sparse dictionary learning
-│   ├── preprocessing/           # Data preparation
-│   └── scgpt/                   # scGPT representations
-├── data/                        # Project datasets
-├── docs/
-│   ├── logging/
-│   │   └── CHANGELOG.md
-│   ├── notes/
-│   │   └── main.tex             # LaTeX reference notes
-│   ├── references/
-│   │   ├── denAdel.pdf
-│   │   ├── group1_abstract.pdf
-│   │   └── group1_proposal.pdf
-│   ├── Python_git.md
-│   └── R_git.md
-├── results/                     # Experiment outputs and figures
-├── .gitignore
-├── LICENSE
-├── README.md
-├── environment_test.ipynb       # Environment checks and data preview
-└── requirements.txt            # Python dependencies
-```
-
-Empty project directories contain `.gitkeep` placeholders, omitted above for readability.
-
-## Getting Started
-
-Clone the repository and create a Python virtual environment:
+### 1. Clone and download
 
 ```bash
 git clone https://github.com/JonathanMa03/gene-complexity.git
 cd gene-complexity
+```
+
+**Google Drive download: [TBD — add the project resource-bundle link here]**
+
+Download both resources from that folder:
+
+- **`baron_raw.h5ad`** — put it in `data/processed/`.
+- **`external.zip`** — extract it at the repository root to create `external/`.
+
+Use the supplied raw-count file, which matches the embedding provenance. A separately downloaded or re-exported Baron file may fail the intentional hash checks. The underlying public dataset is [Baron human pancreas, GSE84133](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE84133).
+
+After extraction, the layout should be:
+
+```text
+gene-complexity/
+├── workflow.ipynb
+├── gene_complexity/
+├── pyproject.toml
+├── requirements.txt
+├── data/processed/baron_raw.h5ad
+└── external/
+    ├── bundle_manifest.json
+    ├── baron_splits_final/
+    │   ├── baron_split_manifest.csv
+    │   ├── baron_exclusions.csv
+    │   ├── split_settings.json
+    │   └── ...                     # Cell-count tables
+    ├── scgpt/pretraining_handoff/
+    │   ├── assets/                 # Fixed gene panel and vocabulary
+    │   ├── outputs/baron/
+    │   │   ├── baron_scgpt_full.npz
+    │   │   ├── baron_scgpt_full.metadata.json
+    │   │   ├── checkpoint_selection.json
+    │   │   └── preparation_report.json
+    │   └── ...                     # Handoff code and provenance
+    └── report_artifacts/           # Saved sources for optional paper snapshots
+```
+
+Avoid an extra `external/external/` nesting level. Keep the downloaded files unchanged. No precomputed dictionary features, trained classifiers, or previous `results/` directory are needed. The default run uses supplied scGPT embeddings and requires neither R, GPU access, nor checkpoint weights.
+
+### 2. Set up Python
+
+Create a virtual environment from the repository root:
+
+```bash
 python3 -m venv .venv
 ```
 
-Activate the environment:
+Activate it:
 
 ```bash
 # macOS / Linux
@@ -86,67 +85,29 @@ source .venv/bin/activate
 .venv\Scripts\Activate.ps1
 ```
 
-Install the dependencies (PyTorch, NumPy, pandas, Matplotlib, Jupyter Notebook, and AnnData), register the project kernel, then launch the environment test:
+On Windows, use `python` instead of `python3` if needed. Then install the package and its dependencies from `requirements.txt`, and register the notebook kernel:
 
 ```bash
-python -m pip install -r requirements.txt
+python -m pip install -e .
 python -m ipykernel install --user --name gene-complexity --display-name "Python (gene-complexity)"
-python -m notebook environment_test.ipynb
 ```
 
-Select the **Python (gene-complexity)** kernel and run all cells. The notebook checks that the kernel uses this repository's `.venv`, imports every dependency in `requirements.txt`, and previews the downloaded dataset. The notebook dependencies include `ipykernel` transitively. On Windows, use `python` instead of `python3` when creating the environment.
+### 3. Check inputs and run
 
-Additional dependencies for the project pipelines will be documented as they are implemented.
+```bash
+python -m gene_complexity run-end-to-end --check-only
+python -m notebook workflow.ipynb
+```
 
-### Server scGPT pretraining handoff
+Select **Python (gene-complexity)** and choose **Restart Kernel and Run All Cells**. In VS Code, open the notebook, select the same kernel or the project's `.venv`, and run all cells.
 
-The [small scGPT pretraining handoff](code/scgpt/pretraining_handoff/README.md)
-documents 51 completed server checkpoints, their fixed gene panel/vocabulary,
-sampling provenance, dependency versions, and frozen 128-dimensional embedding
-extraction. Its dependencies are isolated from the project environment. Large
-weights and sampling tables remain outside Git, with locations and checksum-verified
-retrieval instructions in the handoff. These are controlled small scGPT models,
-not the original large published scGPT checkpoint.
+Leave the configuration defaults in place for the first run. The notebook checks input files, provenance hashes, and stage dependencies before fitting models. It generates processed features, dictionary codes, classifiers, validation metrics, confusion matrices, and dictionary interpretation figures.
 
-## Team Workflow: Branches and Pull Requests
+## Changing or repeating a run
 
-1. Start from an up-to-date `main` branch with no uncommitted changes:
+- `PROFILE="smoke"` uses 256 genes, 8 dictionary atoms, and at most 2 epochs. `"standard"` uses 2,000 genes, 32 atoms, and at most 10 epochs. Neither preset performs model selection automatically.
+- The configuration cell exposes dictionary size, sparsity penalty, classifier regularization, and other settings. Set `RUN_END_TO_END=False` to run individual stages after setup.
+- Choose a new `RUN_NAME` after changing settings or code, or after a failed/partial run. An unchanged completed run verifies and reuses its saved outputs.
+- Optional model-selection, freezing, test-evaluation, and donor-study cells are disabled by default. Follow their notebook instructions when running the full experimental workflow.
 
-   ```bash
-   git switch main
-   git pull --ff-only origin main
-   ```
-
-2. Create your own branch for a task. Replace the example with your name and a short task description:
-
-   ```bash
-   git switch -c jonathan/data-preprocessing
-   ```
-
-3. Make and check your changes, then stage the relevant files and commit. Replace the example path with the files you changed:
-
-   ```bash
-   git status
-   git diff
-   git add code/preprocessing/example.py
-   git commit -m "Add initial data preprocessing"
-   ```
-
-4. Push your branch to GitHub:
-
-   ```bash
-   git push -u origin your-name-here/data-preprocessing
-   ```
-
-5. Open the [repository on GitHub](https://github.com/JonathanMa03/gene-complexity) and select **Compare & pull request**, or open **Pull requests → New pull request**. Set the base branch to `main` and the compare branch to your task branch. Describe what changed and how you checked it, then request a teammate's review.
-
-6. Address review feedback by committing and pushing to the same branch; the pull request updates automatically. After review and any required checks pass, merge the pull request into `main` and delete the merged branch on GitHub.
-
-7. Update your local `main` before starting your next task:
-
-   ```bash
-   git switch main
-   git pull --ff-only origin main
-   ```
-
-Keep each pull request focused on one task and use a new branch for subsequent work.
+Component documentation is in [docs/logging/](docs/logging/). For the optional command-line interface, run `python -m gene_complexity --help`.

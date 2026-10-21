@@ -1,0 +1,56 @@
+\maketitle
+\thispagestyle{fancy}
+\begin{abstract}
+We compare processed gene expression, sparse dictionary codes, and frozen
+scGPT embeddings for human pancreatic cell-type classification using the same
+regularized multinomial logistic model family. On a fixed stratified split of
+8,506 Baron cells, test Macro-F1 is 0.9939 for expression, 0.9810 for a
+64-atom dictionary, and 0.9624 for a small custom scGPT checkpoint. A separate
+retrospective nested donor-held-out analysis matches gene availability,
+standardizes classifier inputs, and varies dictionary initialization. Its
+respective donor-mean Macro-F1 scores are 0.9246, 0.9215, and 0.8823.
+Dictionary predictions vary little across the tested initializations, whereas
+matched atoms are only moderately reproducible. We relate these observations
+to sparse-coding optimality, factor nonidentifiability, and the effect of
+scaling on regularization. The results support sparse compression and the
+importance of a strong expression baseline within this study; they do not
+establish biological pathway recovery or general superiority over pretrained
+single-cell models.
+\end{abstract}
+
+\section{Introduction and related work}
+Single-cell RNA sequencing represents each cell through thousands of gene
+measurements. A representation can be useful because it improves prediction,
+compresses the data, or exposes patterns that can be inspected. These are
+separate goals: an accurate classifier need not reveal stable biological
+programs, and low reconstruction error need not imply useful cell-type
+information. We ask whether a frozen pretrained representation provides more
+linearly accessible cell-type information than a sparse representation learned
+from the target training cells, and whether any compression is accompanied by
+reproducible gene-level structure.
+
+We compare three feature sets under the same logistic model family: processed
+expression, signed sparse dictionary codes, and frozen scGPT embeddings. The
+expression baseline tests whether representation learning is necessary for this
+task. Our contributions are a provenance-checked comparison with frozen test
+evaluation; a retrospective donor, scaling, and initialization analysis; and
+an explicit connection between the optimization objectives, numerical
+certificates, and the limits of interpretation. The mathematics is established
+optimization theory applied to this experiment, not a claim of new theorems.
+
+Sparse coding learns reusable components with sparse activities
+\cite{olshausen1996}; fixing the dictionary yields an $\ell_1$-penalized
+regression problem \cite{tibshirani1996}. Online dictionary learning provides
+an established approach to the joint factorization \cite{mairal2010}, while
+proximal methods explain the thresholding behavior of its convex coding
+subproblem \cite{beck2009}. For single-cell data, consensus nonnegative matrix
+factorization has been used to study identity and activity programs
+\cite{kotliar2019}. Our signed atoms differ from nonnegative programs and
+require sign/permutation alignment before stability comparisons.
+
+scGPT motivates pretrained representations for single-cell tasks
+\cite{cui2024}; work on pretraining size and diversity motivates examining
+which benefits transfer to downstream evaluation \cite{denadel2026}. Our
+comparison uses a small custom checkpoint trained by the project team,
+not the original published large scGPT weights. Conclusions therefore concern
+this checkpoint, this cohort, and regularized linear probing.

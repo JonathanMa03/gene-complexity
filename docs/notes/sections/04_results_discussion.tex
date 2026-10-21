@@ -1,0 +1,99 @@
+\section{Results, discussion, limitations, and conclusion}
+\subsection{Classification and sparse compression}
+Expression has the strongest observed original test performance on all four
+metrics (Table~\ref{tab:test}). The dictionary compresses 2,000 input genes to
+64 coordinates, a 31.25-fold dimensional reduction, while retaining high
+accuracy. Its small validation Macro-F1 advantage (0.984580 versus 0.984365)
+does not persist on test. This is not evidence of superiority or equivalence;
+we do not retune using test outcomes.
+\begin{table}[htbp]\centering
+\caption{Original frozen evaluation on 1,275 test cells from the shared donor
+pool. Higher F1/accuracy is better; lower log loss is better.}
+\label{tab:test}
+\begin{tabular}{lrrrr}\toprule
+Representation & Macro-F1 & Accuracy & Balanced acc. & Log loss\\\midrule
+Expression & 0.993913 & 0.994510 & 0.993687 & 0.019454\\
+Dictionary & 0.980962 & 0.989020 & 0.977933 & 0.036989\\
+scGPT & 0.962358 & 0.968627 & 0.955637 & 0.096535\\\bottomrule
+\end{tabular}
+\end{table}
+
+The selected dictionary has no unused atoms in training or validation.
+With activity defined as $|z_k|>10^{-6}$, validation codes are 17.02\% active
+(10.89 atoms per cell); training codes are 15.30\% active. Validation
+reconstruction MSE is 0.7826, or 0.7924 of the zero-reconstruction MSE.
+This is a reconstruction diagnostic, not a classification result. Lower
+penalties improve reconstruction in this grid without monotonically improving
+classification (Appendix~\ref{app:tables}). The observed baseline strength
+shows why comparison against expression itself is necessary.
+
+\subsection{Donor separation and classifier scaling}
+Table~\ref{tab:donor} summarizes the retrospective matched-panel study.
+Expression and dictionary donor-mean Macro-F1 are close, while scGPT is lower.
+Four donors and overlapping training folds do not support a broad significance
+or equivalence claim. These values cannot be subtracted from the original
+test scores to estimate a pure donor effect: grouping, gene policy, scaling,
+regularization selection, and dictionary initialization also changed.
+\begin{table}[htbp]\centering
+\caption{Retrospective donor Macro-F1. Standardization is the primary protocol;
+SD describes four donor scores after averaging dictionary seeds within donor.}
+\label{tab:donor}
+\begin{tabular}{lcc}\toprule
+Representation & Standardized mean $\pm$ SD & Unscaled mean\\\midrule
+Expression & $0.9246\pm0.0549$ & 0.9246\\
+Dictionary & $0.9215\pm0.0488$ & 0.9220\\
+scGPT & $0.8823\pm0.0473$ & 0.8440\\\bottomrule
+\end{tabular}
+\end{table}
+The scale ablation changes scGPT Macro-F1 substantially, despite using the
+same classifier family and separately tuning regularization. Dictionary
+Macro-F1 changes little here; expression is already standardized upstream.
+This supports treating feature scale as part of a fair linear-probing
+protocol, without claiming that matched genes and scaling eliminate all
+representation differences.
+
+\subsection{Numerical accuracy and interpretation}
+Controlled dictionary initialization yields within-donor Macro-F1 SDs of
+0.0008--0.0030. Atom reproducibility is weaker: mean matched absolute cosine
+is 0.606, top-20-gene Jaccard overlap 0.344, and sign-aligned training-code
+correlation 0.572. Stable prediction therefore does not imply uniquely
+recovered gene programs.
+
+Across 48 donor-study dictionary fits, coding KKT residuals are at most
+$1.1\times10^{-6}$ and the smallest observed Gram eigenvalue is about 0.00488.
+These support accurate, conditionally unique encodings. Projected
+dictionary-gradient norms remain 1.90--4.06 and early stopping occurs after
+2--7 epochs: absence of warnings does not establish joint stationarity or
+global optimality. All 640 donor-study classifier fits completed without
+convergence warnings, and the 40 saved outer prediction sets were checked
+against IDs, labels, and recomputed metrics.
+
+The original fitted dictionary is directly inspectable. For example, atom 2
+has large positive weights on CUZD1, CTRC, and PNLIPRP1 and elevated mean
+activity in acinar cells; atom 5 emphasizes COL1A2, COL3A1, and COL1A1 and
+is active in annotated activated stellate cells. These are observed
+weight/activity associations (Appendix~\ref{app:figures}), not formal
+enrichment or biological validation. Signs and indices are run-specific.
+No causal pathway claim follows, particularly given moderate atom stability.
+
+\subsection{Limitations and conclusion}
+The original split shares donors, and the secondary study is retrospective,
+uses only four donors from one study, and inherits earlier choices. Some
+held-out donors contain only two or three acinar cells; rare-class exclusion
+further restricts the estimand. Annotation quality is assumed. The small
+custom scGPT model, missing panel genes, distinct input transforms, and
+unaudited pretraining overlap limit attribution to architecture or
+pretraining. The adaptive validation search and three initialization seeds
+provide limited coverage. Formal pathway enrichment, external-dataset
+confirmation, and comprehensive hyperparameter or seed sweeps were not done.
+
+For this cohort and linear-probing protocol, the supplied scGPT representation
+does not improve over processed expression or sparse dictionary codes.
+Dictionary learning offers sparse compression and inspectable associations,
+but not established biological identifiability. The strongest methodological
+lesson is to distinguish coding accuracy, predictive stability, and
+biological reproducibility, and to control both donor separation and
+regularization geometry. A future confirmatory study requires an untouched
+cohort, a protocol fixed in advance, and a pretraining-overlap audit.
+\label{main-report-end}
+\FloatBarrier

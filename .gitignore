@@ -299,3 +299,18 @@ __pycache__/
 # Baron preprocessing outputs (generated locally)
 /data/processed/
 /data/baron_gene_symbols.csv
+
+# Logistic regression generated outputs
+/results/logit/
+
+# Downloadable TA resource bundle (distributed through Google Drive)
+/external/
+
+# Reproducible script workflow outputs
+/results/workflow/
+
+# Local frozen-model preservation archives
+/backups/
+
+# Compile the consolidated report locally; track LaTeX source and figure assets.
+/docs/notes/main.pdf

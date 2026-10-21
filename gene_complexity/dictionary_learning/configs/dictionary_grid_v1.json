@@ -1,0 +1,7 @@
+{
+  "description": "Provisional starter grid. Revise in a new version after initial logistic validation feedback; never use test scores to choose candidates.",
+  "atoms": [16, 32],
+  "alpha": [1.0, 5.0],
+  "seeds": [42],
+  "epochs": 10
+}

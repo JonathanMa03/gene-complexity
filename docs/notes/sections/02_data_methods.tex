@@ -1,0 +1,75 @@
+\section{Data and methods}
+\subsection{Data and shared cohort}
+We use the human subset of the Baron pancreas dataset (GSE84133)
+\cite{baron2016}, obtained through Bioconductor's
+\texttt{scRNAseq::BaronPancreasData} \cite{scrnaseq}. The prepared raw-count
+matrix has 8,569 cells, 20,125 genes, four donor IDs, and 14 supplied cell-type
+annotations. Conversion validates finite nonnegative integer counts and
+preserves unique cell IDs, donor IDs, and labels in AnnData. Labels are taken
+as given rather than independently reannotated.
+
+The shared policy removes classes with fewer than 30 cells: T cells (7),
+Schwann (13), epsilon (18), and mast (25), leaving 8,506 cells in ten classes.
+No additional cells fail the matched scGPT-panel check. This cutoff permits
+representation of every retained class in each partition, but narrows the
+task and does not solve within-donor class imbalance. A fixed seed-42,
+cell-type-stratified 70/15/15 split yields 5,954 training, 1,277 validation,
+and 1,275 test cells after integer rounding. Donors overlap across these
+partitions. Appendix~\ref{app:tables} gives donor/class counts.
+
+\subsection{Expression and dictionary features}
+Classical preprocessing divides each cell by its total count across all
+original genes, multiplies by 10,000, and applies $\log(1+x)$. In the original
+experiment, the 2,000 genes with greatest training log-expression variance
+are retained; this is variance ranking, not dispersion-adjusted highly
+variable gene selection. Gene-wise training means and population standard
+deviations define z-scores, with no clipping. Held-out cells reuse these
+parameters and gene ordering. The baseline uses these features directly.
+
+For $X\in\mathbb R^{n\times p}$, we learn signed codes
+$Z\in\mathbb R^{n\times K}$ and signed atoms $D\in\mathbb R^{K\times p}$:
+\begin{equation}
+ \min_{Z,D}\ \frac1n\left(\frac12\|X-ZD\|_F^2+\alpha\|Z\|_1\right),
+ \qquad \|d_k\|_2\le1.
+ \label{eq:dictionary}
+\end{equation}
+The norm constraint prevents $(Z/c,cD)$ from preserving reconstruction while
+arbitrarily reducing the penalty. Fixed-$D$ coding is convex; jointly learning
+both factors is not. We use scikit-learn mini-batch dictionary learning with
+coordinate-descent fitting and penalized Lasso encoding \cite{sklearn}.
+Both use the same $\alpha$. Fitting uses float64, batch size 128, one numerical
+thread, a ten-epoch ceiling, tolerance 0.001, and a ten-batch no-improvement
+stopping heuristic. Encoding allows 3,000 iterations. Early stopping is not
+an optimality certificate. Held-out encoding never updates the dictionary.
+
+\subsection{Frozen scGPT features}
+The fixed checkpoint, \texttt{sctab\_seed0\_n1600000\_scgpt}, has 1,166,466
+parameters and was pretrained on 1.6 million sampled cells for ten epochs.
+The recorded choice uses the largest completed cell-number condition,
+sampling seed 0, and its final epoch; Baron classification scores were not
+used to select it. Pretraining overlap with Baron has not been audited.
+
+The mapped raw input matches 1,879 of 2,000 fixed panel genes. The remaining
+121 columns are zero-filled; extraction uses nonzero panel counts as gene
+tokens, prepends CLS, bins expression into 51 bins, pads/truncates to 1,200 tokens, and performs
+no masked prediction or random token sampling. The frozen encoder returns L2-normalized
+128-dimensional CLS vectors. CPU float32 extraction used batch size 8 and
+preserved all 8,569 IDs; downstream joins select the shared cohort by ID.
+This processing differs from classical log normalization and z-scoring.
+
+\subsection{Common classifier and regularization geometry}
+Each representation receives a separate multinomial logistic classifier with
+unpenalized intercept, L2-penalized weights, and no class weighting. For input
+$u_i$, weights $W$, and intercept $b$, the mean-loss convention is
+\begin{equation}
+ \frac1n\sum_i\left[-(u_iW+b)_{y_i}+\log\sum_c e^{(u_iW+b)_c}\right]
+       +\frac{\lambda}{2}\|W\|_F^2.\label{eq:logit}
+\end{equation}
+The implementation uses $C=1/(n\lambda)$ \cite{sklearn}. In the original
+experiment, features receive no additional classifier-side scaling. In the
+donor study, $u=(h-m)S^{-1}$ uses training-fitted coordinate means and scales
+for all methods. In original coordinates $B=S^{-1}W$, the penalty becomes
+$\lambda\|SB\|_F^2/2$: a single tuned scalar $C$ cannot undo arbitrary
+coordinate-wise scaling. Scaling is therefore part of the statistical model,
+not merely an optimization convenience. Appendix~\ref{app:theory} supplies
+derivations and qualifications.

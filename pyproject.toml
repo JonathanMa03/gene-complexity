@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gene-complexity"
+version = "0.1.0"
+description = "Reproducible single-cell representation and linear-probing workflow"
+requires-python = ">=3.10"
+dynamic = ["dependencies"]
+
+[project.scripts]
+gene-complexity = "gene_complexity.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["gene_complexity*"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.package-data]
+"gene_complexity.classification" = ["configs/*.json"]
+"gene_complexity.dictionary_learning" = ["configs/*.json"]
+"gene_complexity.preprocessing" = ["*.R", "*.csv"]

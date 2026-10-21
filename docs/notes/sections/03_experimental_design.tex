@@ -1,0 +1,66 @@
+\section{Experimental design}
+\subsection{Original stratified-cell comparison}
+A starter dictionary grid used $K\in\{16,32\}$ and $\alpha\in\{1,5\}$.
+One validation-driven refinement used $K\in\{32,64\}$,
+$\alpha\in\{0.5,1,2\}$, and seed 42. This was an adaptive, modest search,
+not a fully prespecified search over all dictionary choices. Each of the six
+refined dictionaries, expression, and scGPT received the same classifier
+search: coarse $C\in\{0.01,0.1,1,10,100,1000\}$, then 21 logarithmically
+spaced values within a factor of ten of the coarse winner, excluding values
+already tested. All 192 classifier fits in the refinement converged.
+
+Validation Macro-F1 selects $C$, with ties preferring smaller $C$.
+Dictionary ties prefer fewer atoms, then fewer active validation coefficients,
+then candidate ID. The selected dictionary has $K=64,\alpha=2$.
+Selected $C$ values are 0.316228 (expression), 0.063096 (dictionary), and
+316.227766 (scGPT). The LBFGS classifier uses at most 5,000 iterations,
+tolerance $10^{-4}$, and one numerical thread. Coefficients and selection
+records are frozen before test evaluation, with no training-plus-validation
+refit. Test predictions are generated once from these saved models; later
+robustness analysis leaves that experiment unchanged.
+
+\subsection{Retrospective nested donor evaluation}
+Each of four outer folds holds out one donor. Among the other three donors,
+each serves once as inner validation while the other two provide training.
+All classical transforms, dictionaries, and classifier scalers are refitted
+inside each fold. Classical methods use the 1,879 measured fixed-panel genes
+rather than training-selected 2,000 genes, while library totals still use all
+raw genes. This controls measured gene availability, not the distinct
+upstream processing or pretraining of scGPT.
+
+The primary protocol standardizes every classifier input. An unstandardized
+ablation is evaluated separately with its own inner tuning, not selected by
+outer performance. Inner tuning uses
+$\lambda\in\{10^{-5},10^{-4},10^{-3},10^{-2},10^{-1}\}$ in
+Equation~\eqref{eq:logit}, with ties preferring stronger regularization.
+Candidates must converge in every inner fit. Dictionary scores average
+seeds 0, 1, and 2 as well as inner donors. Initial atoms are normalized
+training-cell vectors; only their selection varies, with mini-batch random
+state fixed at 42. The classifier tolerance is $10^{-5}$.
+
+The cohort, $K=64$, and $\alpha=2$ are inherited from earlier work, not
+nested-selected anew. All donors contributed to previously inspected results;
+this analysis is retrospective and cannot provide an untouched confirmatory
+test. An earlier sensitivity run varied the estimator random state, mixing
+initialization and batch randomness. It is retained as exploratory provenance;
+the controlled analysis separates these effects and averages all seeds.
+
+\subsection{Metrics, numerical accuracy, and aggregation}
+Macro-F1 is the unweighted mean of class F1 scores; balanced accuracy is mean
+class recall. We also report accuracy and mean multiclass negative log
+probability. Class order, labels, and cell IDs are aligned across methods.
+For donor results, dictionary seeds are averaged within donor before taking
+equal-donor means and descriptive sample SDs. These are not confidence
+intervals: only four donors are available, outer training folds overlap,
+and random seeds are not biological replicates.
+
+For fixed-$D$ coding, $g=(zD-x)D^\top$ must satisfy
+$g_k=-\alpha\operatorname{sign}(z_k)$ when $z_k\ne0$ and
+$|g_k|\le\alpha$ otherwise. These KKT conditions certify the convex coding
+subproblem, not the learned dictionary. Positive
+$\lambda_{\min}(DD^\top)$ establishes conditional coding uniqueness.
+We also measure the projected dictionary-gradient residual for the mean
+reconstruction loss. Atom stability uses maximum-total absolute-cosine
+assignment between same-fold dictionaries, sign-aligned training-code
+correlations, and top-20 absolute-weight gene Jaccard overlap. This handles
+sign and permutation but not program splitting or merging.

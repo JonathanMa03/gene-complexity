@@ -1,82 +1,32 @@
 \documentclass[11pt]{article}
-
-% -------------------------------------------------
-% Packages
-% -------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage[margin=1in]{geometry}
-
-\usepackage{amsmath,amssymb,amsfonts,amsthm,mathtools,bm}
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{multirow}
-\usepackage{longtable}
-\usepackage{enumitem}
-\usepackage{xcolor}
-\usepackage{graphicx}
-\usepackage{float}
-\usepackage{hyperref}
-\usepackage{titlesec}
-\usepackage{setspace}
-\usepackage{microtype}
-
-% -------------------------------------------------
-% Formatting
-% -------------------------------------------------
-\setstretch{1.1}
-
-\titleformat{\section}
-{\large\bfseries}
-{\thesection.}{0.5em}{}
-
-\titleformat{\subsection}
-{\normalsize\bfseries}
-{\thesubsection.}{0.5em}{}
-
-\titleformat{\subsubsection}
-{\normalsize\itshape}
-{\thesubsubsection.}{0.5em}{}
-
-\setlist[itemize]{topsep=2pt,itemsep=2pt}
-\setlist[enumerate]{topsep=2pt,itemsep=2pt}
-
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    urlcolor=blue
-}
-
-% -------------------------------------------------
-% Commands
-% -------------------------------------------------
-\newcommand{\E}{\mathbb{E}}
-\newcommand{\Pbb}{\mathbb{P}}
-\newcommand{\Var}{\mathrm{Var}}
-
-% -------------------------------------------------
-% Title
-% -------------------------------------------------
-\title{\textbf{Reference Notes}}
-\author{Jonathan Ma}
-\date{\today}
-
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,tabularx,graphicx}
+\usepackage{placeins,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\lhead{EN.553.740}\chead{Final project}\rhead{Group 1}\rfoot{\thepage}
+\newtheorem{proposition}{Proposition}
+\graphicspath{{assets/}}
+\title{\textbf{Interpretable Gene Programs or Foundation Models?}\\
+\large Comparing Sparse Dictionary Learning and scGPT\\for Single-Cell Classification}
+\author{Jonathan Ma \and Sijia Zhu \and Jiatong Gao \and Yunwei Chai}
+\date{EN.553.740 Machine Learning 1\\Instructor: Dr. Sichen Yang}
+% Compile from docs/notes. All six includes are parts of this single report.
+% Title, abstract, figures and tables count toward the eight-page main limit.
+% The first include contains the title/abstract to avoid an empty title-only page.
 \begin{document}
+\input{sections/01_introduction_related_work}
+\input{sections/02_data_methods}
+\input{sections/03_experimental_design}
+\input{sections/04_results_discussion}
 
-\maketitle
-\tableofcontents
-\newpage
-
-% =================================================================================
-\part{Readings \& Literature Review}
-
-
-% =================================================================================
-\part{Project Directions}
-
-
-% =================================================================================
-\part{Notes}
-
-
-
+\clearpage
+\appendix
+\input{sections/05_appendices}
+\input{sections/06_references}
 \end{document}
